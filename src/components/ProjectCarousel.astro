@@ -13,65 +13,80 @@ const initialActive = 0;
 ---
 
 <section
-	class="project-carousel col-span-full row-start-1 row-span-5 z-10  w-full min-w-0 grid grid-cols-subgrid grid-rows-subgrid"
+	class="project-carousel col-span-full row-start-1 z-10 w-full min-w-0 grid grid-cols-subgrid grid-rows-subgrid"
 	data-project-carousel
 	data-count={projects.length}
-	data-collapsed-rows="5"
+	data-collapsed-rows="6"
+	data-stage-rows="5"
 	aria-roledescription="carrusel"
 	aria-label="Proyectos"
 >
-	<div class="carousel-stage relative col-span-full row-span-4 row-start-1 w-full max-w-[1776px]">
-		<div class="carousel-track absolute inset-0" data-carousel-track>
+	<div
+		class="carousel-controls row-start-1 col-span-1 z-20 flex items-end justify-end gap-4"
+		data-carousel-controls
+	>
+<button
+	type="button"
+	class="carousel-btn"
+	data-carousel-prev
+	aria-label="Proyecto anterior"
+>
+	<svg viewBox="0 0 10 16" class="carousel-btn__icon" aria-hidden="true">
+		<path d="M8.5 1.5 2 8l6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.2"></path>
+	</svg>
+</button>
+<button
+	type="button"
+	class="carousel-btn"
+	data-carousel-next
+	aria-label="Proyecto siguiente"
+>
+	<svg viewBox="0 0 10 16" class="carousel-btn__icon" aria-hidden="true">
+		<path d="M1.5 1.5 8 8l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.2"></path>
+	</svg>
+</button>
+</div>
+	<div
+		class="carousel-stage relative col-span-full row-span-3  w-full min-w-0 grid grid-cols-subgrid grid-rows-subgrid"
+	>
+		
+		<div class="carousel-track contents" data-carousel-track>
 			{
 				projects.map((project, index) => {
 					const slot = resolveSlideSlot(index, initialActive, projects.length);
 					return (
-					<figure
-						class="carousel-slide m-0"
-						data-slide
-						data-index={index}
-						data-slot={slot}
-						data-nav-theme={project.data.navTheme}
-					>
-						<Image
-							src={project.data.cover}
-							alt={project.data.coverAlt}
-							widths={[240, 480, 752, 1264, 1600]}
-							sizes="(max-width: 768px) 90vw, 42vw"
-							class="carousel-slide__img h-full w-full object-cover"
-						/>
-					</figure>
+						<figure
+							class="carousel-slide m-0 min-w-0 min-h-0"
+							data-slide
+							data-index={index}
+							data-slot={slot}
+							data-nav-theme={project.data.navTheme}
+						>
+							<Image
+								src={project.data.cover}
+								alt={project.data.coverAlt}
+								widths={[240, 480, 752, 1264, 1600]}
+								sizes="(max-width: 640px) 90vw, (max-width: 1024px) 42vw, 30vw"
+								loading={index === 0 ? 'eager' : 'lazy'}
+								fetchpriority={index === 0 ? 'high' : 'auto'}
+								class="carousel-slide__img h-full w-full object-cover"
+							/>
+						</figure>
 					);
 				})
 			}
 		</div>
 
-		<div class="carousel-controls absolute right-[28.83%] top-0 z-20 flex gap-4" data-carousel-controls>
-			<button
-				type="button"
-				class="carousel-btn"
-				data-carousel-prev
-				aria-label="Proyecto anterior"
-			>
-				<svg viewBox="0 0 10 16" class="carousel-btn__icon" aria-hidden="true">
-					<path d="M8.5 1.5 2 8l6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.2"></path>
-				</svg>
-			</button>
-			<button
-				type="button"
-				class="carousel-btn"
-				data-carousel-next
-				aria-label="Proyecto siguiente"
-			>
-				<svg viewBox="0 0 10 16" class="carousel-btn__icon" aria-hidden="true">
-					<path d="M1.5 1.5 8 8l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.2"></path>
-				</svg>
-			</button>
-		</div>
+		
 	</div>
 
-	<div class="carousel-meta col-span-full row-span-1 row-start-5 mt-0 flex w-full items-start justify-between gap-6 px-[28.83%] z-30">
-		<div class="min-w-0 font-libertad-mono  text-base md:text-sm leading-tight text-voi-black" data-carousel-meta>
+	<div
+		class="carousel-meta col-span-3 col-start-3 row-span-1 row-start-5 z-30 flex items-start justify-between gap-6 "
+	>
+		<div
+			class="col-span-full min-w-0 font-libertad-mono text-base leading-tight text-voi-black sm:col-span-1 sm:col-start-2 md:text-sm lg:col-span-2 lg:col-start-3"
+			data-carousel-meta
+		>
 			{
 				projects.map((project, index) => (
 					<div
@@ -92,25 +107,25 @@ const initialActive = 0;
 
 		<button
 			type="button"
-			class="carousel-cta shrink-0 border border-voi-black px-6 py-4 font-libertad-mono text-lg text-voi-black transition-colors hover:bg-voi-orange hover:text-voi-black active:bg-voi-black active:text-voi-white active:scale-90 active:transition-scale"
+			class="carousel-cta col-span-full mt-4 shrink-0 justify-self-start border border-voi-black px-6 py-4 font-libertad-mono text-lg text-voi-black transition-colors hover:bg-voi-orange hover:text-voi-black active:scale-90 active:bg-voi-black active:text-voi-white active:transition-scale sm:col-span-1 sm:col-start-3 sm:mt-0 sm:justify-self-end md:col-start-5 lg:col-span-2 lg:col-start-6"
 			data-carousel-toggle
 			aria-expanded="false"
 			aria-controls="project-detail-panel"
 		>
-			<span data-cta-label>VER PROYECTO</span>
+			<span data-cta-label>VER DETALLE</span>
 		</button>
 	</div>
 
 	<div
 		id="project-detail-panel"
-		class="project-detail-panel col-span-full grid grid-cols-subgrid grid-rows-subgrid bg-voi-white"
+		class="project-detail-panel col-span-full grid grid-cols-subgrid grid-rows-subgrid -mt-22 z-30"
 		data-detail-panel
 		hidden
 	>
 		{
 			projects.map((project, index) => (
 				<div
-					class="col-span-full grid grid-cols-subgrid grid-rows-subgrid"
+					class="col-span-5 col-start-2 grid grid-cols-subgrid grid-rows-subgrid bg-voi-white"
 					data-detail
 					data-index={index}
 					data-id={project.id}
@@ -124,102 +139,156 @@ const initialActive = 0;
 </section>
 
 <style>
+	/* Align to hero's right column; Flip animates the shift on expand/collapse */
+	.carousel-controls {
+		grid-column-start: 2;
+	}
+
+	@media (min-width: 768px) {
+		.carousel-controls {
+			grid-column-start: 4;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.carousel-controls {
+			grid-column-start: 5;
+		}
+	}
+
+	@media (min-width: 640px) {
+		.project-carousel[data-expanded='true'] .carousel-controls {
+			grid-column-start: 3;
+		}
+	}
+
+	@media (min-width: 768px) {
+		.project-carousel[data-expanded='true'] .carousel-controls {
+			grid-column-start: 5;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.project-carousel[data-expanded='true'] .carousel-controls {
+			grid-column-start: 6;
+		}
+	}
+
 	.carousel-stage {
 		overflow: hidden;
+		/* Match layout auto-rows-44 (11rem) + gap-4 (1rem) */
+		--slide-row: 11rem;
+		--slide-gap: 1rem;
+		--slide-h-far: var(--slide-row);
+		--slide-h-mid: calc(var(--slide-row) * 2 + var(--slide-gap));
+		--slide-h-hero: calc(var(--slide-row) * 3 + var(--slide-gap) * 2);
+		touch-action: pan-y;
+		cursor: grab;
+		user-select: none;
+	}
+
+	.carousel-stage.is-dragging {
+		cursor: grabbing;
+	}
+
+	.carousel-stage .carousel-controls,
+	.carousel-stage .carousel-controls * {
+		cursor: pointer;
 	}
 
 	.project-carousel[data-expanded='true'] .carousel-stage {
 		overflow: visible;
 	}
 
-	.carousel-track {
-		overflow: hidden;
+	.carousel-meta {
+		padding: 0;
+		background-color: transparent;
 	}
 
-	.project-carousel[data-expanded='true'] .carousel-track {
-		overflow: visible;
+	/* Background can fade before width collapses; padding stays with expanded width */
+	.project-carousel[data-meta-fill='true'] .carousel-meta {
+		background-color: var(--color-voi-white);
+	}
+
+	.project-carousel[data-expanded='true'] .carousel-meta {
+		padding: 1.25rem;
+	}
+
+	@media (min-width: 768px) {
+		.project-carousel[data-expanded='true'] .carousel-meta {
+			grid-column: 1 / span 5;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.project-carousel[data-expanded='true'] .carousel-meta {
+			grid-column: 2 / span 5;
+		}
 	}
 
 	.carousel-slide {
-		position: absolute;
 		overflow: hidden;
 		margin: 0;
 		opacity: 0;
 		pointer-events: none;
-		transition:
-			left 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-			top 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-			width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-			height 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-			opacity 0.4s ease;
-	}
-
-	/* Off-screen buffers — keep explicit bounds on both sides */
-	.carousel-slide[data-slot='hidden-left'],
-	.carousel-slide[data-slot='hidden-right'] {
-		width: 13.51%;
-		height: 24.81%;
-		top: 35.19%;
-		opacity: 0;
-		visibility: hidden;
 		z-index: 0;
+		grid-row: 1 / span 4;
+		align-self: center;
+		justify-self: stretch;
+		width: 100%;
 	}
 
-	.carousel-slide[data-slot='hidden-left'] {
-		left: -20%;
-	}
-
-	.carousel-slide[data-slot='hidden-right'] {
-		left: 106%;
-	}
-
-	.carousel-slide[data-slot='far-left'],
-	.carousel-slide[data-slot='far-right'] {
-		width: 13.51%;
-		height: 24.81%;
-		top: 35.19%;
-		opacity: 1;
-	}
-
+	.carousel-slide[data-slot='hidden-left'],
 	.carousel-slide[data-slot='far-left'] {
-		left: 0;
+		grid-column: 1 / span 1;
+		height: var(--slide-h-far);
 	}
 
+	.carousel-slide[data-slot='hidden-right'],
 	.carousel-slide[data-slot='far-right'] {
-		left: 86.49%;
-	}
-
-	.carousel-slide[data-slot='mid-left'],
-	.carousel-slide[data-slot='mid-right'] {
-		width: 13.51%;
-		height: 52.71%;
-		top: 22.33%;
-		opacity: 1;
+		grid-column: 2 / span 1;
+		height: var(--slide-h-far);
 	}
 
 	.carousel-slide[data-slot='mid-left'] {
-		left: 14.41%;
+		grid-column: 1 / span 1;
+		height: var(--slide-h-mid);
 	}
 
 	.carousel-slide[data-slot='mid-right'] {
-		left: 72.07%;
+		grid-column: 2 / span 1;
+		height: var(--slide-h-mid);
 	}
 
 	.carousel-slide[data-slot='hero'] {
-		width: 42.34%;
-		height: 80.31%;
-		left: 28.83%;
-		top: 7.44%;
-		opacity: 1;
-		visibility: visible;
+		grid-column: 1 / span 2;
+		height: var(--slide-h-hero);
 		z-index: 2;
 	}
 
 	.carousel-slide[data-slot='far-left'],
 	.carousel-slide[data-slot='far-right'],
 	.carousel-slide[data-slot='mid-left'],
-	.carousel-slide[data-slot='mid-right'] {
-		visibility: visible;
+	.carousel-slide[data-slot='mid-right'],
+	.carousel-slide[data-slot='hero'] {
+		opacity: 1;
+	}
+
+	/* Buffers park off-stage so enters/exits glide instead of popping.
+	   Use the individual `translate` property (not `transform`) so Flip's
+	   leftover inline transforms cannot pin buffers back to their grid cell. */
+	.carousel-slide[data-slot='hidden-left'],
+	.carousel-slide[data-slot='hidden-right'] {
+		opacity: 0;
+		z-index: 0;
+	}
+
+	.carousel-slide[data-slot='hidden-left'] {
+		translate: -120% 0;
+	}
+
+	.carousel-slide[data-slot='hidden-right'] {
+		translate: 120% 0;
 	}
 
 	.carousel-slide__img {
@@ -229,39 +298,138 @@ const initialActive = 0;
 		max-width: 100%;
 		max-height: 100%;
 		object-fit: cover;
+		object-position: center;
 	}
 
 	.project-carousel[data-expanded='true'] .carousel-slide[data-slot='hero'] {
-		width: 71.17%;
-		height: 134.88%;
-		left: 14.41%;
-		top: -19.84%;
+		grid-column: 1 / span 2;
+		align-self: stretch;
+		height: auto;
 		z-index: 3;
 	}
 
-	/* Adjacent projects peek in the side gutters — swap affordance */
-	.project-carousel[data-expanded='true'] .carousel-slide[data-slot='mid-left'] {
-		left: 0;
-		width: 13.51%;
-		height: 52.71%;
-		top: 22.33%;
-		opacity: 1;
-		z-index: 1;
-	}
-
+	.project-carousel[data-expanded='true'] .carousel-slide[data-slot='mid-left'],
 	.project-carousel[data-expanded='true'] .carousel-slide[data-slot='mid-right'] {
-		left: 86.32%;
-		width: 13.51%;
-		height: 52.71%;
-		top: 22.17%;
-		opacity: 1;
 		z-index: 1;
 	}
 
 	.project-carousel[data-expanded='true'] .carousel-slide[data-slot='far-left'],
 	.project-carousel[data-expanded='true'] .carousel-slide[data-slot='far-right'] {
 		opacity: 0;
-		visibility: hidden;
+	}
+
+	/* sm: 3 columns — mid / hero / mid */
+	@media (min-width: 640px) {
+		.carousel-slide[data-slot='hidden-left'],
+		.carousel-slide[data-slot='far-left'],
+		.carousel-slide[data-slot='mid-left'] {
+			grid-column: 1 / span 1;
+		}
+
+		.carousel-slide[data-slot='hero'] {
+			grid-column: 2 / span 1;
+		}
+
+		.carousel-slide[data-slot='hidden-right'],
+		.carousel-slide[data-slot='far-right'],
+		.carousel-slide[data-slot='mid-right'] {
+			grid-column: 3 / span 1;
+		}
+
+		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='hero'] {
+			grid-column: 1 / span 3;
+		}
+
+		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='mid-left'] {
+			grid-column: 1 / span 1;
+		}
+
+		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='mid-right'] {
+			grid-column: 3 / span 1;
+		}
+	}
+
+	/* md: 5 columns — peek / hero×3 / peek */
+	@media (min-width: 768px) {
+		.carousel-slide[data-slot='hidden-left'],
+		.carousel-slide[data-slot='far-left'],
+		.carousel-slide[data-slot='mid-left'] {
+			grid-column: 1 / span 1;
+		}
+
+		.carousel-slide[data-slot='hero'] {
+			grid-column: 2 / span 3;
+		}
+
+		.carousel-slide[data-slot='hidden-right'],
+		.carousel-slide[data-slot='far-right'],
+		.carousel-slide[data-slot='mid-right'] {
+			grid-column: 5 / span 1;
+		}
+
+		.carousel-slide[data-slot='far-left'],
+		.carousel-slide[data-slot='far-right'] {
+			opacity: 0;
+		}
+
+		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='hero'] {
+			grid-column: 1 / span 5;
+		}
+
+		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='mid-left'] {
+			grid-column: 1 / span 1;
+		}
+
+		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='mid-right'] {
+			grid-column: 5 / span 1;
+		}
+	}
+
+	/* lg: 7 columns — full strip */
+	@media (min-width: 1024px) {
+		.carousel-slide[data-slot='hidden-left'],
+		.carousel-slide[data-slot='far-left'] {
+			grid-column: 1 / span 1;
+		}
+
+		.carousel-slide[data-slot='mid-left'] {
+			grid-column: 2 / span 1;
+		}
+
+		.carousel-slide[data-slot='hero'] {
+			grid-column: 3 / span 3;
+		}
+
+		.carousel-slide[data-slot='mid-right'] {
+			grid-column: 6 / span 1;
+		}
+
+		.carousel-slide[data-slot='hidden-right'],
+		.carousel-slide[data-slot='far-right'] {
+			grid-column: 7 / span 1;
+		}
+
+		.carousel-slide[data-slot='far-left'],
+		.carousel-slide[data-slot='far-right'] {
+			opacity: 1;
+		}
+
+		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='hero'] {
+			grid-column: 2 / span 5;
+		}
+
+		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='mid-left'] {
+			grid-column: 1 / span 1;
+		}
+
+		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='mid-right'] {
+			grid-column: 7 / span 1;
+		}
+
+		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='far-left'],
+		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='far-right'] {
+			opacity: 0;
+		}
 	}
 
 	.carousel-btn {
@@ -279,10 +447,11 @@ const initialActive = 0;
 		background: var(--color-voi-orange);
 		color: var(--color-voi-black);
 	}
-	.carousel-btn:active{
+
+	.carousel-btn:active {
 		background: var(--color-voi-black);
 		color: var(--color-voi-white);
-		scale: 0.90;
+		scale: 0.9;
 		transition: scale 0.1s ease-in-out;
 	}
 
@@ -291,82 +460,52 @@ const initialActive = 0;
 		height: 16px;
 	}
 
-	@media (max-width: 900px) {
-		.carousel-slide[data-slot='far-left'],
-		.carousel-slide[data-slot='far-right'] {
-			opacity: 0;
-		}
+	.project-detail-panel {
+		overflow: hidden;
+	}
 
-		.carousel-slide[data-slot='mid-left'] {
-			left: 2%;
-			width: 18%;
-			height: 40%;
-			top: 30%;
-		}
-
-		.carousel-slide[data-slot='mid-right'] {
-			left: 80%;
-			width: 18%;
-			height: 40%;
-			top: 30%;
-		}
-
-		.carousel-slide[data-slot='hero'] {
-			left: 22%;
-			width: 56%;
-			height: 70%;
-			top: 12%;
-		}
-
-		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='hero'] {
-			left: 20%;
-			width: 60%;
-			height: 85%;
-			top: 8%;
-		}
-
-		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='mid-left'] {
-			left: 0;
-			width: 18%;
-			height: 40%;
-			top: 30%;
-			opacity: 1;
-		}
-
-		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='mid-right'] {
-			left: 82%;
-			width: 18%;
-			height: 40%;
-			top: 30%;
-			opacity: 1;
-		}
-
-		.carousel-controls {
-			right: 22%;
-		}
-
-		.carousel-meta {
-			padding-left: 22%;
-			padding-right: 22%;
-			flex-direction: column;
-			align-items: stretch;
-		}
+	.project-carousel [data-detail] {
+		opacity: 1;
 	}
 </style>
-
 <script>
+	import gsap from 'gsap';
+	import { Flip } from 'gsap/Flip';
 	import {
 		forwardOffset,
 		hiddenSnapTarget,
 		resolveSlideSlot,
 	} from '../lib/carousel-slots';
 
+	gsap.registerPlugin(Flip);
+
 	function wrapIndex(index: number, count: number) {
 		return ((index % count) + count) % count;
 	}
 
-	const COLLAPSED_ROWS = 5;
+	const COLLAPSED_ROWS = 6;
 	const STAGE_AND_META_ROWS = 5;
+	const PHASE_DURATION = 0.32;
+	const FADE_DURATION = 0.16;
+	const NAV_DURATION = 0.4;
+	const DRAG_SETTLE = 0.25;
+	const EXPAND_EASE = 'power3.out';
+	/** Close: softer inOut + slightly longer narrow reads as one continuous motion. */
+	const CLOSE_EASE = 'power2.inOut';
+	const DISMISS_DURATION = 0.22;
+	const NARROW_DURATION = 0.42;
+	const PANEL_CLIP_CLOSED = 'inset(0 0 100% 0)';
+	const PANEL_CLIP_OPEN = 'inset(0 0 0 0)';
+	const DRAG_THRESHOLD_PX = 64;
+	const DRAG_MAX_PX = 96; // hard visual cap — keeps Flip from starting far off-cell
+	const DRAG_VELOCITY = 0.45; // px/ms — flick to advance
+	const DRAG_LOCK_PX = 8;
+	const RESIZE_DEBOUNCE = 0.1; // seconds — gsap.delayedCall
+
+	/** Map pointer delta to a bounded slide offset (asymptotic soft clamp). */
+	function clampDragOffset(dx: number) {
+		return Math.tanh(dx / DRAG_MAX_PX) * DRAG_MAX_PX;
+	}
 
 	function activeDetailRows(detail: HTMLElement | undefined) {
 		if (!detail) return 6;
@@ -379,8 +518,16 @@ const initialActive = 0;
 	}
 
 	function initCarousel(root: HTMLElement) {
+		// boot() runs at module eval AND on astro:page-load (which also fires on
+		// first load) — a second init would duplicate listeners and kill in-flight Flips.
+		if (root.dataset.carouselInit === 'true') return;
+		root.dataset.carouselInit = 'true';
+
 		const count = Number(root.dataset.count || 0);
 		if (!count) return;
+
+		const collapsedRows = Number(root.dataset.collapsedRows || COLLAPSED_ROWS);
+		const stageRows = Number(root.dataset.stageRows || STAGE_AND_META_ROWS);
 
 		let active = 0;
 		let expanded = false;
@@ -388,6 +535,9 @@ const initialActive = 0;
 		const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
 		const metas = [...root.querySelectorAll<HTMLElement>('[data-meta]')];
 		const details = [...root.querySelectorAll<HTMLElement>('[data-detail]')];
+		const stage = root.querySelector<HTMLElement>('.carousel-stage');
+		const metaBar = root.querySelector<HTMLElement>('.carousel-meta');
+		const controls = root.querySelector<HTMLElement>('[data-carousel-controls]');
 		const panel = root.querySelector<HTMLElement>('[data-detail-panel]');
 		const toggle = root.querySelector<HTMLButtonElement>('[data-carousel-toggle]');
 		const ctaLabel = root.querySelector<HTMLElement>('[data-cta-label]');
@@ -396,30 +546,359 @@ const initialActive = 0;
 		const main = document.querySelector('main');
 		const brand = document.querySelector<HTMLElement>('[data-site-brand]');
 
-		function syncRowSpans() {
-			const collapsed = Number(root.dataset.collapsedRows || COLLAPSED_ROWS);
+		let dragPointerId: number | null = null;
+		let dragStartX = 0;
+		let dragStartY = 0;
+		let dragLastX = 0;
+		let dragLastT = 0;
+		let dragVelocity = 0;
+		let dragAxis: 'x' | 'y' | null = null;
+		let dragActive = false;
+		let expandTimeline: gsap.core.Timeline | null = null;
+		let resizeCall: gsap.core.Tween | null = null;
+
+		function setPanelClip(value: string) {
+			if (panel) panel.style.clipPath = value;
+		}
+
+		function clearPanelClip() {
+			panel?.style.removeProperty('clip-path');
+		}
+
+		function activeDetailEl() {
+			return details.find((item) => Number(item.dataset.index) === active);
+		}
+
+		function setDetailAlpha(value: number) {
+			const detail = activeDetailEl();
+			if (detail) gsap.set(detail, { autoAlpha: value });
+		}
+
+		function clearDetailAlpha() {
+			for (const detail of details) {
+				gsap.set(detail, { clearProps: 'opacity,visibility' });
+			}
+		}
+
+		function clearFlipTransforms() {
+			gsap.set(slides, { clearProps: 'transform' });
+			if (metaBar) gsap.set(metaBar, { clearProps: 'transform' });
+			// Controls never use Flip absolute — only x. Clear any leftover absolute
+			// props from earlier experiments so the grid cell stays intact.
+			if (controls) {
+				gsap.set(controls, {
+					clearProps: 'transform,position,width,height,top,left,right,bottom,margin',
+				});
+			}
+		}
+
+		function slideFlipTween(
+			state: Flip.FlipState | null,
+			vars?: { duration?: number; ease?: string },
+		) {
+			if (!state) return null;
+			return Flip.from(state, {
+				duration: vars?.duration ?? PHASE_DURATION,
+				ease: vars?.ease ?? EXPAND_EASE,
+				absolute: true,
+				nested: true,
+				prune: true,
+				// width/height (not scale) so object-fit re-crops mid-flight
+				scale: false,
+				props: 'opacity',
+			});
+		}
+
+		function metaFlipTween(
+			state: Flip.FlipState | null,
+			vars?: { duration?: number; ease?: string },
+		) {
+			if (!state || !metaBar) return null;
+			return Flip.from(state, {
+				duration: vars?.duration ?? PHASE_DURATION,
+				ease: vars?.ease ?? EXPAND_EASE,
+				absolute: true,
+				nested: false,
+				scale: false,
+			});
+		}
+
+		/**
+		 * Move controls with x only — stays in grid flow.
+		 * Flip.absolute would pull them out of the row and collapse layout.
+		 * Call AFTER the grid-column mutation; pass left from before the change.
+		 */
+		function controlsMoveTween(
+			fromLeft: number,
+			vars?: { duration?: number; ease?: string },
+		) {
+			if (!controls) return null;
+			const dx = fromLeft - controls.getBoundingClientRect().left;
+			if (Math.abs(dx) < 0.5) return null;
+			gsap.set(controls, { x: dx });
+			return gsap.to(controls, {
+				x: 0,
+				duration: vars?.duration ?? PHASE_DURATION,
+				ease: vars?.ease ?? EXPAND_EASE,
+				clearProps: 'transform',
+			});
+		}
+
+		function applyExpandedChrome(isExpanded: boolean) {
+			root.dataset.expanded = isExpanded ? 'true' : 'false';
+			root.dataset.metaFill = isExpanded ? 'true' : 'false';
+			if (toggle) toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+			if (ctaLabel) {
+				ctaLabel.textContent = isExpanded ? 'OCULTAR DETALLE' : 'VER DETALLE';
+			}
+			main?.classList.toggle('is-expanded', isExpanded);
+
+			const theme = isExpanded
+				? slides[active]?.dataset.navTheme || 'dark'
+				: 'dark';
+			brand?.setAttribute('data-nav-theme', theme);
+		}
+
+		function setMetaFill(on: boolean) {
+			root.dataset.metaFill = on ? 'true' : 'false';
+		}
+
+		function clearMetaFillProps() {
+			if (metaBar) gsap.set(metaBar, { clearProps: 'backgroundColor' });
+		}
+
+		function syncRowSpans(options?: {
+			panelRows?: number;
+			retainLayout?: boolean;
+			/** Override `expanded` when settling mid-toggle (openDetail baseline). */
+			layout?: 'collapsed' | 'expanded';
+		}) {
 			const detail = details.find((item) => Number(item.dataset.index) === active);
 			const detailRows = activeDetailRows(detail);
-			const totalRows = expanded ? STAGE_AND_META_ROWS + detailRows : collapsed;
+			const layout = options?.layout ?? (expanded ? 'expanded' : 'collapsed');
+			const panelRows =
+				options?.panelRows !== undefined
+					? options.panelRows
+					: layout === 'expanded'
+						? detailRows
+						: 0;
+			const totalRows = options?.retainLayout
+				? stageRows + detailRows
+				: layout === 'expanded'
+					? stageRows + panelRows
+					: collapsedRows;
 
-			root.style.gridRow = `2 / span ${totalRows}`;
+			root.style.gridRow = `1 / span ${totalRows}`;
 
 			if (panel) {
-				panel.style.gridRow = expanded ? `span ${detailRows}` : '';
+				panel.style.gridRow = panelRows > 0 ? `span ${panelRows}` : '';
 			}
 
 			for (const item of details) {
 				const isActive = Number(item.dataset.index) === active;
 				const rows = isActive ? detailRows : 0;
-				item.style.gridRow = expanded && isActive ? `span ${rows}` : '';
+				const showDetail = isActive && panelRows > 0;
+				item.style.gridRow = showDetail ? `span ${rows}` : '';
 				const article = item.querySelector<HTMLElement>('[data-row-span]');
 				if (article) {
-					article.style.gridRow = expanded && isActive ? `span ${rows}` : '';
+					article.style.gridRow = showDetail ? `span ${rows}` : '';
 				}
 			}
 		}
 
-		function paint(direction: 'init' | 'next' | 'prev' | 'none' = 'none') {
+		/** Pure kill — no DOM settle. Callers reset explicitly. */
+		function killExpandAnimations() {
+			expandTimeline?.kill();
+			expandTimeline = null;
+			Flip.killFlipsOf(slides, true);
+			if (metaBar) Flip.killFlipsOf(metaBar, true);
+			if (controls) gsap.killTweensOf(controls);
+			if (metaBar) gsap.killTweensOf(metaBar, 'backgroundColor');
+			if (panel) gsap.killTweensOf(panel, 'clipPath');
+			for (const detail of details) gsap.killTweensOf(detail, 'opacity,visibility');
+			clearFlipTransforms();
+			clearMetaFillProps();
+		}
+
+		function settleExpandedUi() {
+			applyExpandedChrome(true);
+			if (panel) panel.hidden = false;
+			syncRowSpans({ layout: 'expanded' });
+			clearPanelClip();
+			clearDetailAlpha();
+		}
+
+		function settleCollapsedUi() {
+			applyExpandedChrome(false);
+			if (panel) panel.hidden = true;
+			syncRowSpans({ panelRows: 0, layout: 'collapsed' });
+			clearPanelClip();
+			clearDetailAlpha();
+		}
+
+		/**
+		 * OPEN — single timeline.
+		 * Contract: Flip.getState → mutate DOM → Flip.from, all synchronous
+		 * before play. Phases: widen → grow → reveal.
+		 */
+		function openDetail() {
+			killExpandAnimations();
+			settleCollapsedUi();
+
+			const slideState = Flip.getState(slides, { props: 'opacity' });
+			const metaState = metaBar ? Flip.getState(metaBar) : null;
+			const controlsLeft = controls?.getBoundingClientRect().left ?? 0;
+
+			applyExpandedChrome(true);
+			if (panel) panel.hidden = true;
+			// Expanded width, no panel rows yet (widen phase)
+			syncRowSpans({ panelRows: 0, layout: 'expanded' });
+			setDetailAlpha(0);
+
+			const tl = gsap.timeline({
+				defaults: { duration: PHASE_DURATION, ease: EXPAND_EASE },
+				onComplete: () => {
+					clearPanelClip();
+					clearDetailAlpha();
+					clearFlipTransforms();
+					expandTimeline = null;
+				},
+			});
+
+			tl.addLabel('widen', 0);
+			const widenSlide = slideFlipTween(slideState);
+			const widenMeta = metaFlipTween(metaState);
+			const widenControls = controlsMoveTween(controlsLeft);
+			if (widenSlide) tl.add(widenSlide, 'widen');
+			if (widenMeta) tl.add(widenMeta, 'widen');
+			if (widenControls) tl.add(widenControls, 'widen');
+
+			tl.addLabel('grow', '>');
+			tl.call(
+				() => {
+					if (!panel) return;
+					panel.hidden = false;
+					syncRowSpans();
+					setPanelClip(PANEL_CLIP_CLOSED);
+					setDetailAlpha(0);
+				},
+				undefined,
+				'grow',
+			);
+			if (panel) {
+				tl.to(panel, { clipPath: PANEL_CLIP_OPEN }, 'grow');
+			}
+
+			// Start reveal before grow finishes — shorter perceived open
+			tl.addLabel('reveal', `-=${FADE_DURATION * 0.5}`);
+			const detail = activeDetailEl();
+			if (detail) {
+				tl.to(detail, { autoAlpha: 1, duration: FADE_DURATION }, 'reveal');
+			}
+
+			expandTimeline = tl;
+		}
+
+		/**
+		 * CLOSE — two timelines with explicit handoff.
+		 * Phase 1 (dismiss): content + clip + meta fill.
+		 * Phase 2 (narrow): capture Flip AFTER dismiss mutates, then width Flip.
+		 * Never inject Flip.from into a running timeline.
+		 */
+		function closeDetail() {
+			killExpandAnimations();
+
+			const detail = activeDetailEl();
+			const detailRows = activeDetailRows(detail);
+
+			// Keep expanded WIDTH while dismissing fill + detail shell
+			root.dataset.expanded = 'true';
+			setMetaFill(true);
+			if (metaBar) {
+				gsap.set(metaBar, { backgroundColor: 'var(--color-voi-white)' });
+			}
+			if (panel && !panel.hidden) {
+				syncRowSpans({ panelRows: detailRows, retainLayout: true });
+			} else {
+				syncRowSpans({ panelRows: 0, retainLayout: true });
+			}
+
+			const dismissTl = gsap.timeline({
+				defaults: { duration: DISMISS_DURATION, ease: CLOSE_EASE },
+				onComplete: startNarrow,
+			});
+
+			dismissTl.addLabel('dismiss', 0);
+
+			// Content leaves first; clip + meta share the dismiss window
+			if (detail) {
+				dismissTl.to(
+					detail,
+					{ autoAlpha: 0, duration: FADE_DURATION, ease: 'power2.in' },
+					'dismiss',
+				);
+			}
+
+			if (panel && !panel.hidden) {
+				dismissTl.fromTo(
+					panel,
+					{ clipPath: PANEL_CLIP_OPEN },
+					{ clipPath: PANEL_CLIP_CLOSED },
+					'dismiss',
+				);
+			}
+
+			if (metaBar) {
+				dismissTl.to(
+					metaBar,
+					{
+						backgroundColor: 'rgba(250, 250, 250, 0)',
+						onComplete: () => {
+							setMetaFill(false);
+							clearMetaFillProps();
+						},
+					},
+					'dismiss',
+				);
+			}
+
+			expandTimeline = dismissTl;
+		}
+
+		function startNarrow() {
+			// Synchronous Flip window — capture, mutate, Flip.from
+			const slideState = Flip.getState(slides, { props: 'opacity' });
+			const metaState = metaBar ? Flip.getState(metaBar) : null;
+			const controlsLeft = controls?.getBoundingClientRect().left ?? 0;
+
+			if (panel) panel.hidden = true;
+			clearPanelClip();
+			clearDetailAlpha();
+			clearMetaFillProps();
+			applyExpandedChrome(false);
+			syncRowSpans({ panelRows: 0, layout: 'collapsed' });
+
+			const flipVars = { duration: NARROW_DURATION, ease: CLOSE_EASE };
+			const narrowTl = gsap.timeline({
+				defaults: flipVars,
+				onComplete: () => {
+					clearFlipTransforms();
+					expandTimeline = null;
+				},
+			});
+
+			const narrowSlide = slideFlipTween(slideState, flipVars);
+			const narrowMeta = metaFlipTween(metaState, flipVars);
+			const narrowControls = controlsMoveTween(controlsLeft, flipVars);
+			if (narrowSlide) narrowTl.add(narrowSlide, 0);
+			if (narrowMeta) narrowTl.add(narrowMeta, 0);
+			if (narrowControls) narrowTl.add(narrowControls, 0);
+
+			expandTimeline = narrowTl;
+		}
+
+		/** Navigate slots only — never opens/closes the detail panel. */
+		function navigate(direction: 'init' | 'next' | 'prev' = 'init') {
 			const previousActive =
 				direction === 'next'
 					? wrapIndex(active - 1, count)
@@ -427,23 +906,50 @@ const initialActive = 0;
 						? wrapIndex(active + 1, count)
 						: active;
 
+			const animate = direction !== 'init';
+
+			// Settle any in-flight expand/collapse to the current flag
+			if (expandTimeline) {
+				killExpandAnimations();
+				if (expanded) settleExpandedUi();
+				else settleCollapsedUi();
+			}
+
+			if (animate) {
+				Flip.killFlipsOf(slides, true);
+				gsap.set(slides, { clearProps: 'transform' });
+			}
+
+			const nextSlots = new Map<HTMLElement, string>();
+			let didSnap = false;
+
 			for (const slide of slides) {
 				const index = Number(slide.dataset.index);
 				const prevSlot =
 					slide.dataset.slot ||
 					resolveSlideSlot(index, previousActive, count, undefined, 'init');
 				const nextSlot = resolveSlideSlot(index, active, count, prevSlot, direction);
+				nextSlots.set(slide, nextSlot);
 
+				// Wrong-side buffer: relocate instantly while invisible, before measuring.
 				const snapTarget = hiddenSnapTarget(prevSlot, nextSlot);
 				if (snapTarget) {
-					slide.style.transition = 'none';
 					slide.dataset.slot = snapTarget;
-					void slide.offsetHeight;
-					slide.style.transition = '';
+					didSnap = true;
 				}
+			}
 
-				slide.dataset.slot = nextSlot;
-				slide.dataset.forward = String(forwardOffset(index, active, count));
+			// Flush layout so getState sees the parked side (CSS translate ±120%).
+			if (didSnap) void stage?.offsetWidth;
+
+			const state = animate ? Flip.getState(slides, { props: 'opacity' }) : null;
+			gsap.set(slides, { x: 0 });
+
+			for (const slide of slides) {
+				slide.dataset.slot = nextSlots.get(slide) || 'hidden-right';
+				slide.dataset.forward = String(
+					forwardOffset(Number(slide.dataset.index), active, count),
+				);
 			}
 
 			for (const meta of metas) {
@@ -454,39 +960,164 @@ const initialActive = 0;
 				detail.hidden = Number(detail.dataset.index) !== active;
 			}
 
-			root.dataset.expanded = expanded ? 'true' : 'false';
+			applyExpandedChrome(expanded);
 			if (panel) panel.hidden = !expanded;
-			if (toggle) toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-			if (ctaLabel) ctaLabel.textContent = expanded ? 'OCULTAR DETALLE' : 'VER PROYECTO';
-			main?.classList.toggle('is-expanded', expanded);
 			syncRowSpans();
+			if (expanded) clearDetailAlpha();
 
-			const theme = expanded
-				? slides[active]?.dataset.navTheme || 'dark'
-				: 'dark';
-			brand?.setAttribute('data-nav-theme', theme);
+			if (state) {
+				Flip.from(state, {
+					duration: NAV_DURATION,
+					ease: EXPAND_EASE,
+					absolute: true,
+					nested: true,
+					prune: true,
+					scale: false,
+					props: 'opacity',
+					onComplete: () => {
+						// Free buffers so CSS `translate` parking can take over again.
+						gsap.set(slides, { clearProps: 'transform' });
+					},
+				});
+			}
 		}
 
-		prev?.addEventListener('click', () => {
+		function goPrev() {
 			active = wrapIndex(active - 1, count);
-			paint('prev');
-		});
+			navigate('prev');
+		}
 
-		next?.addEventListener('click', () => {
+		function goNext() {
 			active = wrapIndex(active + 1, count);
-			paint('next');
-		});
+			navigate('next');
+		}
+
+		function endDrag(commit: boolean) {
+			if (!stage) return;
+			stage.classList.remove('is-dragging');
+			dragActive = false;
+			dragPointerId = null;
+			dragAxis = null;
+
+			if (!commit) {
+				gsap.to(slides, {
+					x: 0,
+					duration: DRAG_SETTLE,
+					ease: EXPAND_EASE,
+					overwrite: true,
+				});
+				return;
+			}
+
+			const dx = clampDragOffset(dragLastX - dragStartX);
+			const flickedNext = dragVelocity < -DRAG_VELOCITY;
+			const flickedPrev = dragVelocity > DRAG_VELOCITY;
+			const draggedNext = dx < -DRAG_THRESHOLD_PX;
+			const draggedPrev = dx > DRAG_THRESHOLD_PX;
+
+			if (flickedNext || draggedNext) goNext();
+			else if (flickedPrev || draggedPrev) goPrev();
+			else {
+				gsap.to(slides, {
+					x: 0,
+					duration: DRAG_SETTLE,
+					ease: EXPAND_EASE,
+					overwrite: true,
+				});
+			}
+		}
+
+		prev?.addEventListener('click', goPrev);
+		next?.addEventListener('click', goNext);
 
 		toggle?.addEventListener('click', () => {
-			expanded = !expanded;
-			paint('none');
+			if (expanded) {
+				expanded = false;
+				closeDetail();
+			} else {
+				expanded = true;
+				openDetail();
+			}
+		});
+
+		stage?.addEventListener('pointerdown', (event) => {
+			if (event.button !== 0) return;
+			if ((event.target as Element | null)?.closest?.('button, a')) return;
+
+			Flip.killFlipsOf(slides, true);
+			gsap.killTweensOf(slides);
+			gsap.set(slides, { x: 0 });
+
+			dragPointerId = event.pointerId;
+			dragStartX = event.clientX;
+			dragStartY = event.clientY;
+			dragLastX = event.clientX;
+			dragLastT = performance.now();
+			dragVelocity = 0;
+			dragAxis = null;
+			dragActive = true;
+			stage.setPointerCapture(event.pointerId);
+		});
+
+		stage?.addEventListener('pointermove', (event) => {
+			if (!dragActive || event.pointerId !== dragPointerId) return;
+
+			const dx = event.clientX - dragStartX;
+			const dy = event.clientY - dragStartY;
+
+			if (!dragAxis) {
+				if (Math.abs(dx) < DRAG_LOCK_PX && Math.abs(dy) < DRAG_LOCK_PX) return;
+				dragAxis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
+				if (dragAxis === 'y') {
+					// Let the page scroll; abandon the gesture.
+					dragActive = false;
+					dragPointerId = null;
+					try {
+						stage.releasePointerCapture(event.pointerId);
+					} catch {
+						/* already released */
+					}
+					return;
+				}
+				stage.classList.add('is-dragging');
+			}
+
+			if (dragAxis !== 'x') return;
+			event.preventDefault();
+
+			const now = performance.now();
+			const dt = now - dragLastT;
+			if (dt > 0) dragVelocity = (event.clientX - dragLastX) / dt;
+			dragLastX = event.clientX;
+			dragLastT = now;
+
+			gsap.set(slides, { x: clampDragOffset(dx) });
+		});
+
+		stage?.addEventListener('pointerup', (event) => {
+			if (event.pointerId !== dragPointerId) return;
+			const wasHorizontal = dragAxis === 'x';
+			endDrag(wasHorizontal);
+		});
+
+		stage?.addEventListener('pointercancel', (event) => {
+			if (event.pointerId !== dragPointerId) return;
+			endDrag(false);
 		});
 
 		window.addEventListener('resize', () => {
-			if (expanded) syncRowSpans();
+			resizeCall?.kill();
+			resizeCall = gsap.delayedCall(RESIZE_DEBOUNCE, () => {
+				killExpandAnimations();
+				clearFlipTransforms();
+				clearPanelClip();
+				clearDetailAlpha();
+				if (expanded) settleExpandedUi();
+				else settleCollapsedUi();
+			});
 		});
 
-		paint('init');
+		navigate('init');
 	}
 
 	function boot() {
