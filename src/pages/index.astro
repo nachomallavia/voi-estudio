@@ -1,11 +1,24 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import ProjectCarousel from '../components/ProjectCarousel.astro';
+import EscobarDetail from '../components/project-details/EscobarDetail.astro';
+import AltarUcoDetail from '../components/project-details/AltarUcoDetail.astro';
+import PaternalDetail from '../components/project-details/PaternalDetail.astro';
+import SaavedraDetail from '../components/project-details/SaavedraDetail.astro';
+import BerazateguiDetail from '../components/project-details/BerazateguiDetail.astro';
+import VespressDetail from '../components/project-details/VespressDetail.astro';
+import { getProjects } from '../lib/projects';
 
-import logoVideoMobile from '../assets/VOI_Logo_Animado_1080x1920_Orange.webm';
-import logoVideoDesktop from '../assets/VOI_Logo_Animado_1920x1080_Orange.webm';
+const projects = await getProjects();
 ---
 
 <Layout bgColor="bg-voi-grey">
-	<div class="col-span-2 row-start-1 row-span-5 z-10"></div>
+	<ProjectCarousel projects={projects}>
+		<EscobarDetail slot="escobar" />
+		<AltarUcoDetail slot="altar-uco" />
+		<PaternalDetail slot="paternal" />
+		<SaavedraDetail slot="saavedra" />
+		<BerazateguiDetail slot="berazategui" />
+		<VespressDetail slot="vespress" />
+	</ProjectCarousel>
 </Layout>

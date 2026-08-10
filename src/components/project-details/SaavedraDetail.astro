@@ -1,0 +1,130 @@
+---
+import { Image } from 'astro:assets';
+import g01 from '../../content/proyectos/saavedra/g-01.jpg';
+import g02 from '../../content/proyectos/saavedra/g-02.jpg';
+import g03 from '../../content/proyectos/saavedra/g-03.jpg';
+import g04 from '../../content/proyectos/saavedra/g-04.jpg';
+import g05 from '../../content/proyectos/saavedra/g-05.jpg';
+import g06 from '../../content/proyectos/saavedra/g-06.jpg';
+import g07 from '../../content/proyectos/saavedra/g-07.jpg';
+import g08 from '../../content/proyectos/saavedra/g-08.jpg';
+---
+
+<article
+	class="project-detail col-span-full grid grid-cols-subgrid grid-rows-subgrid"
+	data-row-span="6"
+	data-row-span-mobile="11"
+>
+	<div class="col-span-full row-span-1 font-libertad-mono text-lg leading-relaxed text-voi-black lg:col-span-3 lg:col-start-2">
+		<p>
+			El proyecto está emplazado en la Ciudad de Buenos Aires, en una zona que se encuentra en plena
+			transformación, en crecimiento social y comercial. Sin embargo sigue identificándose con la
+			esencia del barrio porteño, por esto proyectamos un edificio con materiales que tienen
+			reminiscencia a nuestra infancia, a las casas de nuestros abuelos.
+		</p>
+		<p class="mt-6">Barrio de tango.</p>
+	</div>
+
+	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+		<Image
+			src={g01}
+			alt=""
+			widths={[496, 752, 1009]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-4 lg:col-start-1">
+		<Image
+			src={g02}
+			alt=""
+			widths={[752, 1009, 1400]}
+			sizes="(max-width: 1024px) 100vw, 58vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+		<Image
+			src={g03}
+			alt=""
+			widths={[496, 752, 1009]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-1 row-span-1 overflow-hidden lg:col-span-2 lg:col-start-1">
+		<Image
+			src={g04}
+			alt=""
+			widths={[320, 496]}
+			sizes="(max-width: 1024px) 50vw, 22vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-1 row-span-1 overflow-hidden lg:col-span-2 lg:col-start-3">
+		<Image
+			src={g05}
+			alt=""
+			widths={[320, 496]}
+			sizes="(max-width: 1024px) 50vw, 22vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-3 lg:col-start-5">
+		<Image
+			src={g06}
+			alt=""
+			widths={[496, 752]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<div class="col-span-full row-span-1 grid grid-cols-subgrid lg:col-span-4 lg:col-start-1">
+		<div class="col-span-1 lg:col-span-2">
+			<h3 class="mb-2 font-libertad-mono text-xl text-voi-black">Tipología</h3>
+			<p class="text-[15px] leading-normal text-voi-black/90">
+				Vivienda 10× · 791 m². Edificio en zona de transformación social y comercial.
+			</p>
+		</div>
+		<div class="col-span-1 lg:col-span-2">
+			<h3 class="mb-2 font-libertad-mono text-xl text-voi-black">Enfoque</h3>
+			<p class="text-[15px] leading-normal text-voi-black/90">
+				Materiales con reminiscencia porteña, ligados a la esencia del barrio de tango.
+			</p>
+		</div>
+	</div>
+
+	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+		<Image
+			src={g07}
+			alt=""
+			widths={[496, 752]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+		<Image
+			src={g08}
+			alt=""
+			widths={[496, 752]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+</article>

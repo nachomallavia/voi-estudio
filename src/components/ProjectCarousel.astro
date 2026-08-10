@@ -1,0 +1,498 @@
+---
+import { Image } from 'astro:assets';
+import type { ProjectView } from '../lib/projects';
+import { resolveSlideSlot } from '../lib/carousel-slots';
+
+interface Props {
+	projects: ProjectView[];
+}
+
+const { projects } = Astro.props;
+
+const initialActive = 0;
+---
+
+<section
+	class="project-carousel col-span-full row-start-1 row-span-5 z-10  w-full min-w-0 grid grid-cols-subgrid grid-rows-subgrid"
+	data-project-carousel
+	data-count={projects.length}
+	data-collapsed-rows="5"
+	aria-roledescription="carrusel"
+	aria-label="Proyectos"
+>
+	<div class="carousel-stage relative col-span-full row-span-4 row-start-1 w-full max-w-[1776px]">
+		<div class="carousel-track absolute inset-0" data-carousel-track>
+			{
+				projects.map((project, index) => {
+					const slot = resolveSlideSlot(index, initialActive, projects.length);
+					return (
+					<figure
+						class="carousel-slide m-0"
+						data-slide
+						data-index={index}
+						data-slot={slot}
+						data-nav-theme={project.data.navTheme}
+					>
+						<Image
+							src={project.data.cover}
+							alt={project.data.coverAlt}
+							widths={[240, 480, 752, 1264, 1600]}
+							sizes="(max-width: 768px) 90vw, 42vw"
+							class="carousel-slide__img h-full w-full object-cover"
+						/>
+					</figure>
+					);
+				})
+			}
+		</div>
+
+		<div class="carousel-controls absolute right-[28.83%] top-0 z-20 flex gap-4" data-carousel-controls>
+			<button
+				type="button"
+				class="carousel-btn"
+				data-carousel-prev
+				aria-label="Proyecto anterior"
+			>
+				<svg viewBox="0 0 10 16" class="carousel-btn__icon" aria-hidden="true">
+					<path d="M8.5 1.5 2 8l6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.2"></path>
+				</svg>
+			</button>
+			<button
+				type="button"
+				class="carousel-btn"
+				data-carousel-next
+				aria-label="Proyecto siguiente"
+			>
+				<svg viewBox="0 0 10 16" class="carousel-btn__icon" aria-hidden="true">
+					<path d="M1.5 1.5 8 8l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.2"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+
+	<div class="carousel-meta col-span-full row-span-1 row-start-5 mt-0 flex w-full items-start justify-between gap-6 px-[28.83%] z-30">
+		<div class="min-w-0 font-libertad-mono  text-base md:text-sm leading-tight text-voi-black" data-carousel-meta>
+			{
+				projects.map((project, index) => (
+					<div
+						class="carousel-meta__item"
+						data-meta
+						data-index={index}
+						hidden={index !== 0}
+					>
+						<p>
+							{project.data.code} // {project.data.category}
+						</p>
+						<p>{project.data.locality}</p>
+						<p>{project.data.region}</p>
+					</div>
+				))
+			}
+		</div>
+
+		<button
+			type="button"
+			class="carousel-cta shrink-0 border border-voi-black px-6 py-4 font-libertad-mono text-lg text-voi-black transition-colors hover:bg-voi-orange hover:text-voi-black active:bg-voi-black active:text-voi-white active:scale-90 active:transition-scale"
+			data-carousel-toggle
+			aria-expanded="false"
+			aria-controls="project-detail-panel"
+		>
+			<span data-cta-label>VER PROYECTO</span>
+		</button>
+	</div>
+
+	<div
+		id="project-detail-panel"
+		class="project-detail-panel col-span-full grid grid-cols-subgrid grid-rows-subgrid bg-voi-white"
+		data-detail-panel
+		hidden
+	>
+		{
+			projects.map((project, index) => (
+				<div
+					class="col-span-full grid grid-cols-subgrid grid-rows-subgrid"
+					data-detail
+					data-index={index}
+					data-id={project.id}
+					hidden={index !== 0}
+				>
+					<slot name={project.id} />
+				</div>
+			))
+		}
+	</div>
+</section>
+
+<style>
+	.carousel-stage {
+		overflow: hidden;
+	}
+
+	.project-carousel[data-expanded='true'] .carousel-stage {
+		overflow: visible;
+	}
+
+	.carousel-track {
+		overflow: hidden;
+	}
+
+	.project-carousel[data-expanded='true'] .carousel-track {
+		overflow: visible;
+	}
+
+	.carousel-slide {
+		position: absolute;
+		overflow: hidden;
+		margin: 0;
+		opacity: 0;
+		pointer-events: none;
+		transition:
+			left 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+			top 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+			width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+			height 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+			opacity 0.4s ease;
+	}
+
+	/* Off-screen buffers — keep explicit bounds on both sides */
+	.carousel-slide[data-slot='hidden-left'],
+	.carousel-slide[data-slot='hidden-right'] {
+		width: 13.51%;
+		height: 24.81%;
+		top: 35.19%;
+		opacity: 0;
+		visibility: hidden;
+		z-index: 0;
+	}
+
+	.carousel-slide[data-slot='hidden-left'] {
+		left: -20%;
+	}
+
+	.carousel-slide[data-slot='hidden-right'] {
+		left: 106%;
+	}
+
+	.carousel-slide[data-slot='far-left'],
+	.carousel-slide[data-slot='far-right'] {
+		width: 13.51%;
+		height: 24.81%;
+		top: 35.19%;
+		opacity: 1;
+	}
+
+	.carousel-slide[data-slot='far-left'] {
+		left: 0;
+	}
+
+	.carousel-slide[data-slot='far-right'] {
+		left: 86.49%;
+	}
+
+	.carousel-slide[data-slot='mid-left'],
+	.carousel-slide[data-slot='mid-right'] {
+		width: 13.51%;
+		height: 52.71%;
+		top: 22.33%;
+		opacity: 1;
+	}
+
+	.carousel-slide[data-slot='mid-left'] {
+		left: 14.41%;
+	}
+
+	.carousel-slide[data-slot='mid-right'] {
+		left: 72.07%;
+	}
+
+	.carousel-slide[data-slot='hero'] {
+		width: 42.34%;
+		height: 80.31%;
+		left: 28.83%;
+		top: 7.44%;
+		opacity: 1;
+		visibility: visible;
+		z-index: 2;
+	}
+
+	.carousel-slide[data-slot='far-left'],
+	.carousel-slide[data-slot='far-right'],
+	.carousel-slide[data-slot='mid-left'],
+	.carousel-slide[data-slot='mid-right'] {
+		visibility: visible;
+	}
+
+	.carousel-slide__img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		max-width: 100%;
+		max-height: 100%;
+		object-fit: cover;
+	}
+
+	.project-carousel[data-expanded='true'] .carousel-slide[data-slot='hero'] {
+		width: 71.17%;
+		height: 134.88%;
+		left: 14.41%;
+		top: -19.84%;
+		z-index: 3;
+	}
+
+	/* Adjacent projects peek in the side gutters — swap affordance */
+	.project-carousel[data-expanded='true'] .carousel-slide[data-slot='mid-left'] {
+		left: 0;
+		width: 13.51%;
+		height: 52.71%;
+		top: 22.33%;
+		opacity: 1;
+		z-index: 1;
+	}
+
+	.project-carousel[data-expanded='true'] .carousel-slide[data-slot='mid-right'] {
+		left: 86.32%;
+		width: 13.51%;
+		height: 52.71%;
+		top: 22.17%;
+		opacity: 1;
+		z-index: 1;
+	}
+
+	.project-carousel[data-expanded='true'] .carousel-slide[data-slot='far-left'],
+	.project-carousel[data-expanded='true'] .carousel-slide[data-slot='far-right'] {
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	.carousel-btn {
+		display: grid;
+		place-items: center;
+		width: 32px;
+		height: 32px;
+		border: 1px solid var(--color-voi-black);
+		color: var(--color-voi-black);
+		background: transparent;
+		cursor: pointer;
+	}
+
+	.carousel-btn:hover {
+		background: var(--color-voi-orange);
+		color: var(--color-voi-black);
+	}
+	.carousel-btn:active{
+		background: var(--color-voi-black);
+		color: var(--color-voi-white);
+		scale: 0.90;
+		transition: scale 0.1s ease-in-out;
+	}
+
+	.carousel-btn__icon {
+		width: 10px;
+		height: 16px;
+	}
+
+	@media (max-width: 900px) {
+		.carousel-slide[data-slot='far-left'],
+		.carousel-slide[data-slot='far-right'] {
+			opacity: 0;
+		}
+
+		.carousel-slide[data-slot='mid-left'] {
+			left: 2%;
+			width: 18%;
+			height: 40%;
+			top: 30%;
+		}
+
+		.carousel-slide[data-slot='mid-right'] {
+			left: 80%;
+			width: 18%;
+			height: 40%;
+			top: 30%;
+		}
+
+		.carousel-slide[data-slot='hero'] {
+			left: 22%;
+			width: 56%;
+			height: 70%;
+			top: 12%;
+		}
+
+		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='hero'] {
+			left: 20%;
+			width: 60%;
+			height: 85%;
+			top: 8%;
+		}
+
+		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='mid-left'] {
+			left: 0;
+			width: 18%;
+			height: 40%;
+			top: 30%;
+			opacity: 1;
+		}
+
+		.project-carousel[data-expanded='true'] .carousel-slide[data-slot='mid-right'] {
+			left: 82%;
+			width: 18%;
+			height: 40%;
+			top: 30%;
+			opacity: 1;
+		}
+
+		.carousel-controls {
+			right: 22%;
+		}
+
+		.carousel-meta {
+			padding-left: 22%;
+			padding-right: 22%;
+			flex-direction: column;
+			align-items: stretch;
+		}
+	}
+</style>
+
+<script>
+	import {
+		forwardOffset,
+		hiddenSnapTarget,
+		resolveSlideSlot,
+	} from '../lib/carousel-slots';
+
+	function wrapIndex(index: number, count: number) {
+		return ((index % count) + count) % count;
+	}
+
+	const COLLAPSED_ROWS = 5;
+	const STAGE_AND_META_ROWS = 5;
+
+	function activeDetailRows(detail: HTMLElement | undefined) {
+		if (!detail) return 6;
+		const article = detail.querySelector<HTMLElement>('[data-row-span]');
+		if (!article) return 6;
+		const mobile = window.matchMedia('(max-width: 1023px)').matches;
+		const key = mobile ? 'rowSpanMobile' : 'rowSpan';
+		const raw = article.dataset[key] || article.dataset.rowSpan || '6';
+		return Number(raw) || 6;
+	}
+
+	function initCarousel(root: HTMLElement) {
+		const count = Number(root.dataset.count || 0);
+		if (!count) return;
+
+		let active = 0;
+		let expanded = false;
+
+		const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
+		const metas = [...root.querySelectorAll<HTMLElement>('[data-meta]')];
+		const details = [...root.querySelectorAll<HTMLElement>('[data-detail]')];
+		const panel = root.querySelector<HTMLElement>('[data-detail-panel]');
+		const toggle = root.querySelector<HTMLButtonElement>('[data-carousel-toggle]');
+		const ctaLabel = root.querySelector<HTMLElement>('[data-cta-label]');
+		const prev = root.querySelector<HTMLButtonElement>('[data-carousel-prev]');
+		const next = root.querySelector<HTMLButtonElement>('[data-carousel-next]');
+		const main = document.querySelector('main');
+		const brand = document.querySelector<HTMLElement>('[data-site-brand]');
+
+		function syncRowSpans() {
+			const collapsed = Number(root.dataset.collapsedRows || COLLAPSED_ROWS);
+			const detail = details.find((item) => Number(item.dataset.index) === active);
+			const detailRows = activeDetailRows(detail);
+			const totalRows = expanded ? STAGE_AND_META_ROWS + detailRows : collapsed;
+
+			root.style.gridRow = `2 / span ${totalRows}`;
+
+			if (panel) {
+				panel.style.gridRow = expanded ? `span ${detailRows}` : '';
+			}
+
+			for (const item of details) {
+				const isActive = Number(item.dataset.index) === active;
+				const rows = isActive ? detailRows : 0;
+				item.style.gridRow = expanded && isActive ? `span ${rows}` : '';
+				const article = item.querySelector<HTMLElement>('[data-row-span]');
+				if (article) {
+					article.style.gridRow = expanded && isActive ? `span ${rows}` : '';
+				}
+			}
+		}
+
+		function paint(direction: 'init' | 'next' | 'prev' | 'none' = 'none') {
+			const previousActive =
+				direction === 'next'
+					? wrapIndex(active - 1, count)
+					: direction === 'prev'
+						? wrapIndex(active + 1, count)
+						: active;
+
+			for (const slide of slides) {
+				const index = Number(slide.dataset.index);
+				const prevSlot =
+					slide.dataset.slot ||
+					resolveSlideSlot(index, previousActive, count, undefined, 'init');
+				const nextSlot = resolveSlideSlot(index, active, count, prevSlot, direction);
+
+				const snapTarget = hiddenSnapTarget(prevSlot, nextSlot);
+				if (snapTarget) {
+					slide.style.transition = 'none';
+					slide.dataset.slot = snapTarget;
+					void slide.offsetHeight;
+					slide.style.transition = '';
+				}
+
+				slide.dataset.slot = nextSlot;
+				slide.dataset.forward = String(forwardOffset(index, active, count));
+			}
+
+			for (const meta of metas) {
+				meta.hidden = Number(meta.dataset.index) !== active;
+			}
+
+			for (const detail of details) {
+				detail.hidden = Number(detail.dataset.index) !== active;
+			}
+
+			root.dataset.expanded = expanded ? 'true' : 'false';
+			if (panel) panel.hidden = !expanded;
+			if (toggle) toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+			if (ctaLabel) ctaLabel.textContent = expanded ? 'OCULTAR DETALLE' : 'VER PROYECTO';
+			main?.classList.toggle('is-expanded', expanded);
+			syncRowSpans();
+
+			const theme = expanded
+				? slides[active]?.dataset.navTheme || 'dark'
+				: 'dark';
+			brand?.setAttribute('data-nav-theme', theme);
+		}
+
+		prev?.addEventListener('click', () => {
+			active = wrapIndex(active - 1, count);
+			paint('prev');
+		});
+
+		next?.addEventListener('click', () => {
+			active = wrapIndex(active + 1, count);
+			paint('next');
+		});
+
+		toggle?.addEventListener('click', () => {
+			expanded = !expanded;
+			paint('none');
+		});
+
+		window.addEventListener('resize', () => {
+			if (expanded) syncRowSpans();
+		});
+
+		paint('init');
+	}
+
+	function boot() {
+		document.querySelectorAll<HTMLElement>('[data-project-carousel]').forEach(initCarousel);
+	}
+
+	boot();
+	document.addEventListener('astro:page-load', boot);
+</script>

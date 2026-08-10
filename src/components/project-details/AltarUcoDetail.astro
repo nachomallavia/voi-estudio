@@ -1,0 +1,130 @@
+---
+import { Image } from 'astro:assets';
+import g01 from '../../content/proyectos/altar-uco/g-01.jpg';
+import g02 from '../../content/proyectos/altar-uco/g-02.jpg';
+import g03 from '../../content/proyectos/altar-uco/g-03.jpg';
+import g04 from '../../content/proyectos/altar-uco/g-04.jpg';
+import g05 from '../../content/proyectos/altar-uco/g-05.jpg';
+import g06 from '../../content/proyectos/altar-uco/g-06.jpg';
+import g07 from '../../content/proyectos/altar-uco/g-07.jpg';
+import g08 from '../../content/proyectos/altar-uco/g-08.jpg';
+---
+
+<article
+	class="project-detail col-span-full grid grid-cols-subgrid grid-rows-subgrid"
+	data-row-span="6"
+	data-row-span-mobile="11"
+>
+	<div class="col-span-full row-span-1 font-libertad-mono text-lg leading-relaxed text-voi-black lg:col-span-3 lg:col-start-2">
+		<p>
+			El proyecto está emplazado en el valle de Uco, compartiendo el sitio el edificio de la bodega
+			junto a sus viñedos. El edificio se ocupa principalmente con su área productiva compartiendo el
+			espacio de guarda y degustación, donde se acrecentó el peso de los materiales para la relación
+			con el vino y para la relación con el sitio, desde su topografía hacia su vista al cordón del
+			Plata.
+		</p>
+	</div>
+
+	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+		<Image
+			src={g01}
+			alt=""
+			widths={[496, 752, 1009]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-4 lg:col-start-1">
+		<Image
+			src={g02}
+			alt=""
+			widths={[752, 1009, 1400]}
+			sizes="(max-width: 1024px) 100vw, 58vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+		<Image
+			src={g03}
+			alt=""
+			widths={[496, 752, 1009]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-1 row-span-1 overflow-hidden lg:col-span-2 lg:col-start-1">
+		<Image
+			src={g04}
+			alt=""
+			widths={[320, 496]}
+			sizes="(max-width: 1024px) 50vw, 22vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-1 row-span-1 overflow-hidden lg:col-span-2 lg:col-start-3">
+		<Image
+			src={g05}
+			alt=""
+			widths={[320, 496]}
+			sizes="(max-width: 1024px) 50vw, 22vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-3 lg:col-start-5">
+		<Image
+			src={g06}
+			alt=""
+			widths={[496, 752]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<div class="col-span-full row-span-1 grid grid-cols-subgrid lg:col-span-4 lg:col-start-1">
+		<div class="col-span-1 lg:col-span-2">
+			<h3 class="mb-2 font-libertad-mono text-xl text-voi-black">Tipología</h3>
+			<p class="text-[15px] leading-normal text-voi-black/90">
+				Bodega · 540 m². Edificio productivo con guarda y degustación junto a los viñedos.
+			</p>
+		</div>
+		<div class="col-span-1 lg:col-span-2">
+			<h3 class="mb-2 font-libertad-mono text-xl text-voi-black">Sitio</h3>
+			<p class="text-[15px] leading-normal text-voi-black/90">
+				Emplazado en el Valle de Uco, dialogando con la topografía y la vista al cordón del Plata.
+			</p>
+		</div>
+	</div>
+
+	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+		<Image
+			src={g07}
+			alt=""
+			widths={[496, 752]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+		<Image
+			src={g08}
+			alt=""
+			widths={[496, 752]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+</article>

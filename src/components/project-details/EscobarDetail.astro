@@ -1,0 +1,145 @@
+---
+import { Image } from 'astro:assets';
+import g01 from '../../content/proyectos/escobar/g-01.jpg';
+import g02 from '../../content/proyectos/escobar/g-02.jpg';
+import g03 from '../../content/proyectos/escobar/g-03.jpg';
+import g04 from '../../content/proyectos/escobar/g-04.jpg';
+import g05 from '../../content/proyectos/escobar/g-05.jpg';
+import g06 from '../../content/proyectos/escobar/g-06.jpg';
+import g07 from '../../content/proyectos/escobar/g-07.jpg';
+import g08 from '../../content/proyectos/escobar/g-08.jpg';
+---
+
+<article
+	class="project-detail col-span-full grid grid-cols-subgrid grid-rows-subgrid"
+	data-row-span="6"
+	data-row-span-mobile="12"
+>
+	<div class="col-span-full row-span-1 font-libertad-mono text-lg leading-relaxed text-voi-black lg:col-span-3 lg:col-start-2">
+		<p>
+			La vivienda contemplaba la necesidad de una familia habitando en fin de semana, por ello era
+			importante el bajo mantenimiento de los materiales, utilizando hormigón, ladrillo y herrería
+			oscura.
+		</p>
+		<p class="mt-6">
+			Por otro lado el confort con la mayor versatilidad de los espacios y en tiempos, por ello se
+			enfatizó la orientación norte, con aleros y regulación de aberturas, para su buen uso en
+			verano e invierno.
+		</p>
+	</div>
+
+	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+		<Image
+			src={g01}
+			alt=""
+			widths={[496, 752, 1009]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-4 lg:col-start-1">
+		<Image
+			src={g02}
+			alt=""
+			widths={[752, 1009, 1400]}
+			sizes="(max-width: 1024px) 100vw, 58vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+		<Image
+			src={g03}
+			alt=""
+			widths={[496, 752, 1009]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-1 row-span-1 overflow-hidden lg:col-span-2 lg:col-start-1">
+		<Image
+			src={g04}
+			alt=""
+			widths={[320, 496]}
+			sizes="(max-width: 1024px) 50vw, 22vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-1 row-span-1 overflow-hidden lg:col-span-2 lg:col-start-3">
+		<Image
+			src={g05}
+			alt=""
+			widths={[320, 496]}
+			sizes="(max-width: 1024px) 50vw, 22vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-3 lg:col-start-5">
+		<Image
+			src={g06}
+			alt=""
+			widths={[496, 752]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<div class="col-span-full row-span-1 grid grid-cols-subgrid lg:col-span-4 lg:col-start-1">
+		<div class="col-span-1 lg:col-span-2">
+			<h3 class="mb-2 font-libertad-mono text-xl text-voi-black">Tipología</h3>
+			<p class="text-[15px] leading-normal text-voi-black/90">
+				Vivienda 1× · 272 m². Pensada para una familia en fin de semana, con bajo mantenimiento y
+				espacios versátiles.
+			</p>
+		</div>
+		<div class="col-span-1 lg:col-span-2">
+			<h3 class="mb-2 font-libertad-mono text-xl text-voi-black">Materiales</h3>
+			<p class="text-[15px] leading-normal text-voi-black/90">
+				Hormigón, ladrillo y herrería oscura, con orientación norte, aleros y regulación de
+				aberturas.
+			</p>
+		</div>
+	</div>
+
+	<div class="relative col-span-full row-span-2 overflow-hidden lg:col-span-4 lg:col-start-1">
+		<div class="absolute left-0 top-0 h-[336px] w-[240px] bg-voi-orange" aria-hidden="true"></div>
+		<blockquote class="relative z-10 py-10 pl-20 pr-4 font-libertad-mono text-voi-black">
+			<p class="text-3xl leading-snug">
+				“La vivienda contemplaba la necesidad de una familia habitando en fin de semana.”
+			</p>
+			<footer class="mt-8 text-xl">VOI Estudio — proyecto y obra</footer>
+		</blockquote>
+	</div>
+
+	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+		<Image
+			src={g07}
+			alt=""
+			widths={[496, 752]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+
+	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+		<Image
+			src={g08}
+			alt=""
+			widths={[496, 752]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+</article>

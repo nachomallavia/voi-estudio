@@ -40,3 +40,14 @@
 	--color-voi-green: #A5D3B8;
 	--color-voi-grey: #AAA39D;
 }
+
+[data-site-brand] {
+	--nav-fg: var(--color-voi-black);
+	color: var(--color-voi-black);
+	transition: color 200ms ease, border-color 200ms ease;
+}
+
+[data-site-brand][data-nav-theme="light"] {
+	--nav-fg: var(--color-voi-white);
+	color: var(--color-voi-white);
+}
