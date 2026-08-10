@@ -6,12 +6,6 @@ import logoVideoMobile from '../assets/VOI_Logo_Animado_1080x1920_Orange.webm';
 import logoVideoDesktop from '../assets/VOI_Logo_Animado_1920x1080_Orange.webm';
 ---
 
-<Layout>
-	<main class="flex items-center justify-center h-screen  bg-white">
-		<div class="flex flex-col items-center justify-center w-full h-full translate-y-[-10%]">
-			<video src={logoVideoMobile} autoplay muted loop class="w-1/2 block md:hidden z-5"></video>
-			<video src={logoVideoDesktop} autoplay muted loop class="w-1/2 hidden md:block translate-x-[-4%] z-5"></video>
-			<h1 class="text-2xl font-light -mt-20 text-white z-10">Sitio en construcción...</h1>
-		</div>
-	</main>
+<Layout bgColor="bg-voi-grey">
+	<div class="col-span-2 row-start-1 row-span-5 z-10"></div>
 </Layout>

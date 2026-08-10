@@ -1,30 +1,42 @@
 @import "tailwindcss";
 
 @font-face {
-    font-family:"LibertadMono";    
-        src: url('../fonts/LibertadMono-Thin.ttf') format('truetype');
-        font-weight: 200;
-        font-style: normal;
-        font-display: swap;
-      }
+	font-family: "LibertadMono";
+	src: url("/fonts/LibertadMono-Thin.ttf") format("truetype");
+	font-weight: 200;
+	font-style: normal;
+	font-display: swap;
+}
+
 @font-face {
-        font-family:"LibertadMono";    
-            src: url('../fonts/LibertadMono-Regular.ttf') format('truetype');
-            font-weight: 400;
-            font-style: normal;
-            font-display: swap;
-          }
+	font-family: "LibertadMono";
+	src: url("/fonts/LibertadMono-Regular.ttf") format("truetype");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
 @font-face {
-            font-family:"LibertadMono";    
-                src: url('../fonts/LibertadMono-Medium.ttf') format('truetype');
-                font-weight: 500;
-                font-style: normal;
-                font-display: swap;
-              }
-              @font-face {
-                font-family:"LibertadMono";    
-                    src: url('../fonts/LibertadMono-Black.ttf') format('truetype');
-                    font-weight: 900;
-                    font-style: normal;
-                    font-display: swap;
-                  }
+	font-family: "LibertadMono";
+	src: url("/fonts/LibertadMono-Medium.ttf") format("truetype");
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "LibertadMono";
+	src: url("/fonts/LibertadMono-Black.ttf") format("truetype");
+	font-weight: 900;
+	font-style: normal;
+	font-display: swap;
+}
+
+@theme {
+	--font-libertad-mono: "LibertadMono", sans-serif;
+	--color-voi-orange: #FF6430;
+	--color-voi-black: #232323;
+	--color-voi-white: #FAFAFA;
+	--color-voi-green: #A5D3B8;
+	--color-voi-grey: #AAA39D;
+}
