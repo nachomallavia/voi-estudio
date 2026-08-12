@@ -9,7 +9,11 @@ interface Props {
 
 const { projects } = Astro.props;
 
-const initialActive = 0;
+const proyectoParam = Astro.url.searchParams.get('proyecto');
+const detalleParam = Astro.url.searchParams.get('detalle');
+const matchedIndex = projects.findIndex((project) => project.id === proyectoParam);
+const initialActive = matchedIndex >= 0 ? matchedIndex : 0;
+const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 ---
 
 <section
@@ -18,6 +22,10 @@ const initialActive = 0;
 	data-count={projects.length}
 	data-collapsed-rows="6"
 	data-stage-rows="5"
+	data-initial-active={initialActive}
+	data-initial-expanded={initialExpanded ? 'true' : 'false'}
+	data-expanded={initialExpanded ? 'true' : 'false'}
+	data-meta-fill={initialExpanded ? 'true' : 'false'}
 	aria-roledescription="carrusel"
 	aria-label="Proyectos"
 >
@@ -67,8 +75,8 @@ const initialActive = 0;
 								alt={project.data.coverAlt}
 								widths={[240, 480, 752, 1264, 1600]}
 								sizes="(max-width: 640px) 90vw, (max-width: 1024px) 42vw, 30vw"
-								loading={index === 0 ? 'eager' : 'lazy'}
-								fetchpriority={index === 0 ? 'high' : 'auto'}
+								loading={index === initialActive ? 'eager' : 'lazy'}
+								fetchpriority={index === initialActive ? 'high' : 'auto'}
 								class="carousel-slide__img h-full w-full object-cover"
 							/>
 						</figure>
@@ -93,7 +101,7 @@ const initialActive = 0;
 						class="carousel-meta__item"
 						data-meta
 						data-index={index}
-						hidden={index !== 0}
+						hidden={index !== initialActive}
 					>
 						<p>
 							{project.data.code} // {project.data.category}
@@ -109,10 +117,10 @@ const initialActive = 0;
 			type="button"
 			class="carousel-cta col-span-full mt-4 shrink-0 justify-self-start border border-voi-black px-6 py-4 font-libertad-mono text-lg text-voi-black transition-colors hover:bg-voi-orange hover:text-voi-black active:scale-90 active:bg-voi-black active:text-voi-white active:transition-scale sm:col-span-1 sm:col-start-3 sm:mt-0 sm:justify-self-end md:col-start-5 lg:col-span-2 lg:col-start-6"
 			data-carousel-toggle
-			aria-expanded="false"
+			aria-expanded={initialExpanded ? 'true' : 'false'}
 			aria-controls="project-detail-panel"
 		>
-			<span data-cta-label>VER DETALLE</span>
+			<span data-cta-label>{initialExpanded ? 'OCULTAR DETALLE' : 'VER DETALLE'}</span>
 		</button>
 	</div>
 
@@ -120,7 +128,7 @@ const initialActive = 0;
 		id="project-detail-panel"
 		class="project-detail-panel col-span-full grid grid-cols-subgrid grid-rows-subgrid -mt-22 z-30"
 		data-detail-panel
-		hidden
+		hidden={!initialExpanded}
 	>
 		{
 			projects.map((project, index) => (
@@ -129,7 +137,7 @@ const initialActive = 0;
 					data-detail
 					data-index={index}
 					data-id={project.id}
-					hidden={index !== 0}
+					hidden={index !== initialActive}
 				>
 					<slot name={project.id} />
 				</div>
@@ -137,6 +145,55 @@ const initialActive = 0;
 		}
 	</div>
 </section>
+
+<script is:inline data-astro-rerun>
+	(() => {
+		const root = document.querySelector('[data-project-carousel]');
+		if (!root) return;
+
+		const params = new URLSearchParams(location.search);
+		const hasUrlState = params.has('proyecto') || params.has('detalle');
+		let stored = null;
+		try {
+			stored = JSON.parse(sessionStorage.getItem('voi-carousel') || 'null');
+		} catch {
+			stored = null;
+		}
+
+		const proyecto = params.get('proyecto') || (!hasUrlState && stored && stored.proyecto) || null;
+		const expanded = hasUrlState
+			? params.get('detalle') === '1' || params.get('detalle') === 'true'
+			: Boolean(stored && stored.detalle);
+
+		const details = [...root.querySelectorAll('[data-detail]')];
+		let active = 0;
+		if (proyecto) {
+			const match = details.find((item) => item.getAttribute('data-id') === proyecto);
+			if (match) active = Number(match.getAttribute('data-index')) || 0;
+		}
+
+		root.setAttribute('data-expanded', expanded ? 'true' : 'false');
+		root.setAttribute('data-meta-fill', expanded ? 'true' : 'false');
+		root.setAttribute('data-initial-active', String(active));
+		root.setAttribute('data-initial-expanded', expanded ? 'true' : 'false');
+
+		const panel = root.querySelector('[data-detail-panel]');
+		if (panel) panel.hidden = !expanded;
+
+		const toggle = root.querySelector('[data-carousel-toggle]');
+		if (toggle) toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+
+		const label = root.querySelector('[data-cta-label]');
+		if (label) label.textContent = expanded ? 'OCULTAR DETALLE' : 'VER DETALLE';
+
+		for (const item of root.querySelectorAll('[data-meta]')) {
+			item.hidden = Number(item.getAttribute('data-index')) !== active;
+		}
+		for (const item of details) {
+			item.hidden = Number(item.getAttribute('data-index')) !== active;
+		}
+	})();
+</script>
 
 <style>
 	/* Align to hero's right column; Flip animates the shift on expand/collapse */
@@ -529,9 +586,6 @@ const initialActive = 0;
 		const collapsedRows = Number(root.dataset.collapsedRows || COLLAPSED_ROWS);
 		const stageRows = Number(root.dataset.stageRows || STAGE_AND_META_ROWS);
 
-		let active = 0;
-		let expanded = false;
-
 		const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
 		const metas = [...root.querySelectorAll<HTMLElement>('[data-meta]')];
 		const details = [...root.querySelectorAll<HTMLElement>('[data-detail]')];
@@ -545,6 +599,49 @@ const initialActive = 0;
 		const next = root.querySelector<HTMLButtonElement>('[data-carousel-next]');
 		const main = document.querySelector('main');
 		const brand = document.querySelector<HTMLElement>('[data-site-brand]');
+
+		const STORAGE_KEY = 'voi-carousel';
+
+		function isDetalleFlag(value: string | null) {
+			return value === '1' || value === 'true';
+		}
+
+		function readStoredCarousel() {
+			try {
+				const raw = sessionStorage.getItem(STORAGE_KEY);
+				return raw ? (JSON.parse(raw) as { proyecto?: string; detalle?: boolean }) : null;
+			} catch {
+				return null;
+			}
+		}
+
+		function writeStoredCarousel(proyecto: string | undefined, detalle: boolean) {
+			try {
+				sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ proyecto, detalle }));
+			} catch {
+				/* private mode */
+			}
+		}
+
+		function readClientState() {
+			const params = new URLSearchParams(window.location.search);
+			const hasUrlState = params.has('proyecto') || params.has('detalle');
+			const stored = hasUrlState ? null : readStoredCarousel();
+			const proyecto = params.get('proyecto') ?? stored?.proyecto ?? undefined;
+			const expanded = hasUrlState
+				? isDetalleFlag(params.get('detalle'))
+				: Boolean(stored?.detalle);
+			const fromId = details.findIndex((item) => item.dataset.id === proyecto);
+			return {
+				activeIndex: fromId >= 0 ? fromId : 0,
+				expanded,
+				restoredFromStorage: Boolean(stored && !hasUrlState),
+			};
+		}
+
+		const initialState = readClientState();
+		let active = initialState.activeIndex;
+		let expanded = initialState.expanded;
 
 		let dragPointerId: number | null = null;
 		let dragStartX = 0;
@@ -985,11 +1082,26 @@ const initialActive = 0;
 		function goPrev() {
 			active = wrapIndex(active - 1, count);
 			navigate('prev');
+			syncUrl();
 		}
 
 		function goNext() {
 			active = wrapIndex(active + 1, count);
 			navigate('next');
+			syncUrl();
+		}
+
+		function syncUrl() {
+			const url = new URL(window.location.href);
+			const id = details.find((item) => Number(item.dataset.index) === active)?.dataset.id;
+			if (id) url.searchParams.set('proyecto', id);
+			else url.searchParams.delete('proyecto');
+			if (expanded) url.searchParams.set('detalle', '1');
+			else url.searchParams.delete('detalle');
+			writeStoredCarousel(id, expanded);
+			if (url.href !== window.location.href) {
+				history.replaceState(history.state, '', url);
+			}
 		}
 
 		function endDrag(commit: boolean) {
@@ -1038,6 +1150,7 @@ const initialActive = 0;
 				expanded = true;
 				openDetail();
 			}
+			syncUrl();
 		});
 
 		stage?.addEventListener('pointerdown', (event) => {
@@ -1118,6 +1231,8 @@ const initialActive = 0;
 		});
 
 		navigate('init');
+		if (expanded) settleExpandedUi();
+		if (initialState.restoredFromStorage) syncUrl();
 	}
 
 	function boot() {
