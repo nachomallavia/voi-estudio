@@ -1,8 +1,141 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import VoiOutline from '../assets/nosotros/voi-outline.svg';
+
+const partnerCopy =
+	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis orci elit. Cras non erat vestibulum, ornare augue q';
+
+const partners = [
+	{ name: 'Partner 1', copy: partnerCopy },
+	{ name: 'Partner 2', copy: partnerCopy },
+	{ name: 'Partner 3', copy: partnerCopy },
+] as const;
+
+const checklist = [
+	'ANÁLISIS GEOGRÁFICO',
+	'IMPACTO SOCIOCULTURAL',
+	'SELECCIÓN DE MATERIALES',
+	'DOCUMENTACIÓN TÉCNICA',
+] as const;
+
+const ecosistema = [
+	{
+		title: '1. EL EQUIPO',
+		body: 'Desde adentro del estudio, donde cada talento suma una perspectiva única y técnica para resolver el problema.',
+	},
+	{
+		title: '2. LOS SOCIOS',
+		body: 'Asesores, constructores y proveedores que transforman la documentación técnica en realidad tangible.',
+	},
+	{
+		title: '3. EL CLIENTE',
+		body: 'El pilar fundamental. Sus necesidades operativas y deseos son el motor y la validación de cada trazo.',
+	},
+] as const;
 ---
 
 <Layout bgColor="bg-voi-white">
-	<div class="col-span-full row-start-1 row-span-5 z-10 relative grid grid-cols-subgrid grid-rows-subgrid">
+	<div
+		class="col-span-full row-start-1 row-span-12 z-10 relative grid grid-cols-subgrid grid-rows-subgrid font-libertad-mono text-voi-black"
+	>
+		{/* Manifesto — Layout rows 3+ (below logo/nav) */}
+		<section
+			class="col-span-full row-start-3 row-span-5 z-10 px-2 lg:col-span-2 lg:col-start-2 lg:px-0"
+		>
+			<div class="text-base leading-6 space-y-6">
+				<p>
+					Nuestra identidad nace del reconocimiento del &ldquo;otro&rdquo;. Es una palabra que nos
+					recuerda que las mejores soluciones no vienen de una sola dirección.
+				</p>
+				<p>
+					Buscamos expandir la arquitectura enfocándonos en el cliente, entendiendo su necesidad
+					como punto de partida para desarrollar un proyecto único.
+				</p>
+				<p>Nos adaptamos a la visión del otro aportando una mirada multidisciplinar.</p>
+			</div>
+
+			<h2 class="mt-8 text-2xl font-black leading-6 text-voi-orange uppercase">
+				Precisión y materialidad
+			</h2>
+
+			<div class="mt-6 text-lg leading-6 space-y-6">
+				<p>
+					Reflejamos la función a través de la precisión física. No hay decisiones arbitrarias en
+					nuestro proceso.
+				</p>
+				<p>
+					El color, la forma, la textura y el material son la manifestación directa del sistema que
+					estamos creando.
+				</p>
+				<p>La estética es la consecuencia de un sistema bien diseñado.</p>
+			</div>
+
+			<ul class="mt-10 text-base leading-8 uppercase list-none p-0 m-0">
+				{
+					checklist.map((item) => (
+						<li>
+							<span aria-hidden="true">[ + ] </span>
+							{item}
+						</li>
+					))
+				}
+			</ul>
+		</section>
+
+		{/* Partners — desktop: top-right beside brand; mobile: below manifesto */}
+		<section
+			class="col-span-full row-start-8 row-span-4 relative z-10 px-2 lg:row-start-1 pt-8 lg:row-span-5 lg:col-span-2 lg:col-start-5 lg:px-0"
+		>
+			<div
+				class="pointer-events-none absolute -right-8 top-0 hidden h-full w-[28rem] text-voi-grey lg:block"
+				aria-hidden="true"
+			>
+				<VoiOutline
+					class="absolute left-1/2 top-1/2 h-[42rem] w-auto max-w-none -translate-x-1/2 -translate-y-1/2 rotate-90 stroke-1 opacity-50"
+				/>
+			</div>
+
+			<ul class="relative z-10 m-0 flex list-none flex-col gap-10 p-0 lg:gap-12 lg:pt-8">
+				{
+					partners.map(({ name, copy }) => (
+						<li class="flex items-start gap-6">
+							<div class="size-40 shrink-0 bg-voi-black" aria-hidden="true" />
+							<div class="flex flex-col">
+								<h4 class="text-lg leading-normal text-voi-black">{name}</h4>
+								<p class="max-w-80 pt-2 text-[15px] leading-normal text-justify text-voi-black">
+									{copy}
+								</p>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+		<div class="col-span-1 row-span-2 row-start-5 col-start-7 flex items-center justify-center">
+		<p
+				class="pointer-events-none z-20 hidden origin-center -rotate-90 whitespace-nowrap text-lg text-voi-black lg:block"
+			>
+				BUENOS AIRES, AR
+			</p>
+		</div>
+
+		{/* Ecosistema — below manifesto on both breakpoints */}
+		<section
+			class="col-span-full row-start-12 row-span-5 z-10 px-2 pb-20 lg:col-span-6 lg:col-start-2 lg:row-start-8 lg:row-span-5 lg:px-0"
+		>
+			<h2 class="mb-6 text-4xl leading-none uppercase">Ecosistema de trabajo</h2>
+
+			<div class="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-4">
+				{
+					ecosistema.map(({ title, body }) => (
+						<article>
+							<div class="aspect-[496/336] w-full bg-voi-orange" aria-hidden="true" />
+							<h3 class="mt-4 text-4xl leading-none uppercase">{title}</h3>
+							<p class="mt-4 max-w-[29rem] text-base leading-normal text-voi-black">{body}</p>
+						</article>
+					))
+				}
+			</div>
+		</section>
 	</div>
 </Layout>

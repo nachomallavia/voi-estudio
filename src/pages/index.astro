@@ -7,12 +7,24 @@ import PaternalDetail from '../components/project-details/PaternalDetail.astro';
 import SaavedraDetail from '../components/project-details/SaavedraDetail.astro';
 import BerazateguiDetail from '../components/project-details/BerazateguiDetail.astro';
 import VespressDetail from '../components/project-details/VespressDetail.astro';
+import BentStrip from '../assets/bent-strip.svg';
 import { getProjects } from '../lib/projects';
 
 const projects = await getProjects();
 ---
 
 <Layout bgColor="bg-voi-grey">
+	<div
+		class="pointer-events-none relative z-0 col-span-full row-start-1 row-span-6 overflow-hidden"
+		aria-hidden="true"
+	>
+		<BentStrip
+			class="absolute top-0 right-0 h-3/4 w-auto max-w-none text-voi-white"
+		/>
+		<BentStrip
+			class="absolute left-0 top-[61%] h-3/4 w-auto max-w-none text-voi-orange"
+		/>
+	</div>
 	<ProjectCarousel projects={projects}>
 		<EscobarDetail slot="escobar" />
 		<AltarUcoDetail slot="altar-uco" />
@@ -21,4 +33,5 @@ const projects = await getProjects();
 		<BerazateguiDetail slot="berazategui" />
 		<VespressDetail slot="vespress" />
 	</ProjectCarousel>
+
 </Layout>
