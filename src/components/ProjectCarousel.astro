@@ -89,10 +89,10 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 	</div>
 
 	<div
-		class="carousel-meta col-span-3 col-start-3 row-span-1 row-start-5 z-30 flex items-start justify-between gap-6 "
+		class="carousel-meta row-span-1 row-start-5 z-40 flex min-w-0 items-start justify-between gap-6"
 	>
 		<div
-			class="col-span-full min-w-0 font-libertad-mono text-base leading-tight text-voi-black sm:col-span-1 sm:col-start-2 md:text-sm lg:col-span-2 lg:col-start-3"
+			class="min-w-0 font-libertad-mono text-base leading-tight text-voi-black md:text-sm"
 			data-carousel-meta
 		>
 			{
@@ -115,7 +115,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 
 		<button
 			type="button"
-			class="carousel-cta col-span-full mt-4 shrink-0 justify-self-start border border-voi-black px-6 py-4 font-libertad-mono text-lg text-voi-black transition-colors hover:bg-voi-orange hover:text-voi-black active:scale-90 active:bg-voi-black active:text-voi-white active:transition-scale sm:col-span-1 sm:col-start-3 sm:mt-0 sm:justify-self-end md:col-start-5 lg:col-span-2 lg:col-start-6"
+			class="carousel-cta shrink-0 border border-voi-black px-6 py-4 font-libertad-mono text-lg text-voi-black transition-colors hover:bg-voi-orange hover:text-voi-black active:scale-90 active:bg-voi-black active:text-voi-white active:transition-scale"
 			data-carousel-toggle
 			aria-expanded={initialExpanded ? 'true' : 'false'}
 			aria-controls="project-detail-panel"
@@ -133,7 +133,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		{
 			projects.map((project, index) => (
 				<div
-					class="col-span-5 col-start-2 grid grid-cols-subgrid grid-rows-subgrid bg-voi-white"
+					class="col-span-full grid grid-cols-subgrid grid-rows-subgrid bg-voi-white lg:col-span-5 lg:col-start-2"
 					data-detail
 					data-index={index}
 					data-id={project.id}
@@ -260,6 +260,26 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 	.carousel-meta {
 		padding: 0;
 		background-color: transparent;
+		/* Stay in-grid under the hero at every breakpoint (2 / 3 / 5 / 7 cols). */
+		grid-column: 1 / span 2;
+	}
+
+	@media (min-width: 640px) {
+		.carousel-meta {
+			grid-column: 1 / span 3;
+		}
+	}
+
+	@media (min-width: 768px) {
+		.carousel-meta {
+			grid-column: 2 / span 3;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.carousel-meta {
+			grid-column: 3 / span 3;
+		}
 	}
 
 	/* Background can fade before width collapses; padding stays with expanded width */
@@ -269,6 +289,13 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 
 	.project-carousel[data-expanded='true'] .carousel-meta {
 		padding: 1.25rem;
+		grid-column: 1 / span 2;
+	}
+
+	@media (min-width: 640px) {
+		.project-carousel[data-expanded='true'] .carousel-meta {
+			grid-column: 1 / span 3;
+		}
 	}
 
 	@media (min-width: 768px) {
@@ -518,7 +545,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 	}
 
 	.project-detail-panel {
-		overflow: hidden;
+		overflow: visible;
 	}
 
 	.project-carousel [data-detail] {
@@ -571,7 +598,16 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		const mobile = window.matchMedia('(max-width: 1023px)').matches;
 		const key = mobile ? 'rowSpanMobile' : 'rowSpan';
 		const raw = article.dataset[key] || article.dataset.rowSpan || '6';
-		return Number(raw) || 6;
+		const declared = Number(raw) || 6;
+
+		const height = article.scrollHeight;
+		if (!height) return declared;
+
+		const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+		const row = 11 * rem;
+		const gap = 1 * rem;
+		const measured = Math.ceil((height + gap) / (row + gap));
+		return Math.max(declared, measured);
 	}
 
 	function initCarousel(root: HTMLElement) {
@@ -679,7 +715,13 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 
 		function clearFlipTransforms() {
 			gsap.set(slides, { clearProps: 'transform' });
-			if (metaBar) gsap.set(metaBar, { clearProps: 'transform' });
+			// Meta stays in grid flow (no Flip.absolute). Clear leftover absolute
+			// props so a killed tween cannot pin it off-cell.
+			if (metaBar) {
+				gsap.set(metaBar, {
+					clearProps: 'transform,position,width,height,top,left,right,bottom,margin',
+				});
+			}
 			// Controls never use Flip absolute — only x. Clear any leftover absolute
 			// props from earlier experiments so the grid cell stays intact.
 			if (controls) {
@@ -714,7 +756,9 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 			return Flip.from(state, {
 				duration: vars?.duration ?? PHASE_DURATION,
 				ease: vars?.ease ?? EXPAND_EASE,
-				absolute: true,
+				// Keep the bar in grid flow — absolute Flip was leaving it offset
+				// or covered after expand/collapse, especially on narrow viewports.
+				absolute: false,
 				nested: false,
 				scale: false,
 			});

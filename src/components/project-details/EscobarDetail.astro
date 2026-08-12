@@ -11,11 +11,11 @@ import g08 from '../../content/proyectos/escobar/g-08.jpg';
 ---
 
 <article
-	class="project-detail col-span-full grid grid-cols-subgrid grid-rows-subgrid"
-	data-row-span="6"
-	data-row-span-mobile="12"
+	class="project-detail col-span-full grid grid-cols-subgrid content-start self-start h-auto gap-y-5 bg-voi-white auto-rows-[minmax(11rem,auto)]"
+	data-row-span="9"
+	data-row-span-mobile="15"
 >
-	<div class="col-span-full flex flex-col gap-5 font-libertad-mono text-base leading-normal text-voi-black lg:col-span-2 lg:col-start-1 lg:px-5">
+	<div class="col-span-full flex min-h-44 flex-col gap-5 px-5 pt-15 font-libertad-mono text-base text-pretty leading-normal text-voi-black lg:col-span-3 lg:col-start-1 lg:row-span-2 border-b border-voi-orange">
 		<p class="text-justify">
 			La vivienda contemplaba la necesidad de una familia habitando en fin de semana, por ello era
 			importante el bajo mantenimiento de los materiales, utilizando hormigón, ladrillo y herrería
@@ -28,7 +28,7 @@ import g08 from '../../content/proyectos/escobar/g-08.jpg';
 		</p>
 	</div>
 
-	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-4">
+	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-3 lg:col-start-4">
 		<Image
 			src={g02}
 			alt=""
@@ -38,10 +38,11 @@ import g08 from '../../content/proyectos/escobar/g-08.jpg';
 			loading="lazy"
 		/>
 	</figure>
+	<div class="col-span-full row-span-1 min-h-44 bg-voi-orange"></div>
 
-	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-4 lg:col-start-1">
+	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-4 lg:col-start-1">
 		<Image
-			src={g02}
+			src={g03}
 			alt=""
 			widths={[752, 1009, 1400]}
 			sizes="(max-width: 1024px) 100vw, 58vw"
@@ -111,8 +112,8 @@ import g08 from '../../content/proyectos/escobar/g-08.jpg';
 		</div>
 	</div>
 
-	<div class="relative col-span-full row-span-2 overflow-hidden lg:col-span-4 lg:col-start-1">
-		<div class="absolute left-0 top-0 h-[336px] w-[240px] bg-voi-orange" aria-hidden="true"></div>
+	<div class="grid grid-cols-subgrid grid-rows-subgrid col-span-full  min-h-92 lg:col-span-4 lg:col-start-1">
+		<div class=" bg-voi-orange col-span-1 row-span-1 lg:col-span-1 lg:row-span-2" aria-hidden="true"></div>
 		<blockquote class="relative z-10 py-10 pl-20 pr-4 font-libertad-mono text-voi-black">
 			<p class="text-3xl leading-snug">
 				“La vivienda contemplaba la necesidad de una familia habitando en fin de semana.”
@@ -143,3 +144,18 @@ import g08 from '../../content/proyectos/escobar/g-08.jpg';
 		/>
 	</figure>
 </article>
+
+<style>
+	figure {
+		position: relative;
+		min-height: 11rem;
+	}
+
+	figure :global(img) {
+		position: absolute;
+		inset: 0;
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+	}
+</style>
