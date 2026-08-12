@@ -89,7 +89,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 	</div>
 
 	<div
-		class="carousel-meta row-span-1 row-start-5 z-40 flex min-w-0 items-start justify-between gap-6"
+		class="carousel-meta row-span-1 row-start-5 z-30 flex min-w-0 items-start justify-between gap-5 pt-5"
 	>
 		<div
 			class="min-w-0 font-libertad-mono text-base leading-tight text-voi-black md:text-sm"
@@ -126,7 +126,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 
 	<div
 		id="project-detail-panel"
-		class="project-detail-panel col-span-full grid grid-cols-subgrid grid-rows-subgrid -mt-22 z-30"
+		class="project-detail-panel col-span-full grid grid-cols-subgrid grid-rows-subgrid z-30"
 		data-detail-panel
 		hidden={!initialExpanded}
 	>
@@ -258,7 +258,12 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 	}
 
 	.carousel-meta {
-		padding: 0;
+		/* Close the grid gaps (gap-4 = 1rem) so the box sits flush to the cover
+		   and the detail; the same 1rem returns as padding so copy stays on-grid. */
+		--meta-gap: 1rem;
+		margin-block: calc(-1 * var(--meta-gap));
+		padding-block: var(--meta-gap);
+		padding-inline: var(--meta-gap);
 		background-color: transparent;
 		/* Stay in-grid under the hero at every breakpoint (2 / 3 / 5 / 7 cols). */
 		grid-column: 1 / span 2;
@@ -267,6 +272,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 	@media (min-width: 640px) {
 		.carousel-meta {
 			grid-column: 1 / span 3;
+			padding-inline: 0;
 		}
 	}
 
@@ -282,13 +288,12 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		}
 	}
 
-	/* Background can fade before width collapses; padding stays with expanded width */
 	.project-carousel[data-meta-fill='true'] .carousel-meta {
 		background-color: var(--color-voi-white);
 	}
 
 	.project-carousel[data-expanded='true'] .carousel-meta {
-		padding: 1.25rem;
+		padding-inline: var(--meta-gap);
 		grid-column: 1 / span 2;
 	}
 
@@ -545,7 +550,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 	}
 
 	.project-detail-panel {
-		overflow: visible;
+		overflow: hidden;
 	}
 
 	.project-carousel [data-detail] {
@@ -790,7 +795,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 			root.dataset.metaFill = isExpanded ? 'true' : 'false';
 			if (toggle) toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
 			if (ctaLabel) {
-				ctaLabel.textContent = isExpanded ? 'OCULTAR DETALLE' : 'VER DETALLE';
+				ctaLabel.textContent = isExpanded ? 'OCULTAR DETALLE' : 'MOSTRAR DETALLE';
 			}
 			main?.classList.toggle('is-expanded', isExpanded);
 
