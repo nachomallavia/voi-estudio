@@ -85,7 +85,24 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 			}
 		</div>
 
-		
+		<nav
+			class="carousel-pager"
+			data-carousel-pager
+			aria-label="Posición del carrusel"
+		>
+			{
+				projects.map((project, index) => (
+					<button
+						type="button"
+						class="carousel-pager__item"
+						data-pager-item
+						data-index={index}
+						aria-label={project.data.code}
+						aria-current={index === initialActive ? 'true' : 'false'}
+					/>
+				))
+			}
+		</nav>
 	</div>
 
 	<div
@@ -191,6 +208,10 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		}
 		for (const item of details) {
 			item.hidden = Number(item.getAttribute('data-index')) !== active;
+		}
+		for (const item of root.querySelectorAll('[data-pager-item]')) {
+			const isActive = Number(item.getAttribute('data-index')) === active;
+			item.setAttribute('aria-current', isActive ? 'true' : 'false');
 		}
 	})();
 </script>
@@ -521,6 +542,53 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		}
 	}
 
+	.carousel-pager {
+		display: none;
+		position: absolute;
+		inset: 0;
+		grid-column: 1 / -1;
+		grid-row: 1 / -1;
+		z-index: 30;
+		align-items: flex-end;
+		justify-content: center;
+		gap: 0.125rem;
+		padding-bottom: 0.75rem;
+		pointer-events: none;
+	}
+
+	@media (max-width: 767px) {
+		.carousel-pager {
+			display: flex;
+		}
+	}
+
+	.carousel-pager__item {
+		pointer-events: auto;
+		display: grid;
+		place-items: center;
+		width: 22px;
+		height: 22px;
+		padding: 0;
+		border: none;
+		background: transparent;
+		cursor: pointer;
+	}
+
+	.carousel-pager__item::after {
+		content: '';
+		width: 8px;
+		height: 8px;
+		border: 1px solid var(--color-voi-white);
+		background: transparent;
+		box-shadow: 0 0 0 1px rgb(35 35 35 / 0.3);
+	}
+
+	.carousel-pager__item[aria-current='true']::after {
+		background: var(--color-voi-orange);
+		border-color: var(--color-voi-orange);
+		box-shadow: none;
+	}
+
 	.carousel-btn {
 		display: grid;
 		place-items: center;
@@ -596,23 +664,35 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		return Math.tanh(dx / DRAG_MAX_PX) * DRAG_MAX_PX;
 	}
 
-	function activeDetailRows(detail: HTMLElement | undefined) {
+	/** Enough tracks for auto-placement to finish; subgrid cannot grow past its span. */
+	const DETAIL_ROW_PROBE = 48;
+
+	function declaredDetailRows(detail: HTMLElement | undefined) {
 		if (!detail) return 6;
 		const article = detail.querySelector<HTMLElement>('[data-row-span]');
 		if (!article) return 6;
 		const mobile = window.matchMedia('(max-width: 1023px)').matches;
 		const key = mobile ? 'rowSpanMobile' : 'rowSpan';
 		const raw = article.dataset[key] || article.dataset.rowSpan || '6';
-		const declared = Number(raw) || 6;
+		return Number(raw) || 6;
+	}
 
-		const height = article.scrollHeight;
-		if (!height) return declared;
-
+	function usedGridRows(article: HTMLElement) {
 		const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
 		const row = 11 * rem;
 		const gap = 1 * rem;
-		const measured = Math.ceil((height + gap) / (row + gap));
-		return Math.max(declared, measured);
+		const track = row + gap;
+		const top = article.getBoundingClientRect().top;
+		let maxBottom = top;
+		for (const child of article.children) {
+			if (!(child instanceof HTMLElement)) continue;
+			const rect = child.getBoundingClientRect();
+			if (rect.width === 0 && rect.height === 0) continue;
+			maxBottom = Math.max(maxBottom, rect.bottom);
+		}
+		const height = maxBottom - top;
+		if (height <= 0) return 0;
+		return Math.max(1, Math.ceil((height + gap) / track));
 	}
 
 	function initCarousel(root: HTMLElement) {
@@ -630,6 +710,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
 		const metas = [...root.querySelectorAll<HTMLElement>('[data-meta]')];
 		const details = [...root.querySelectorAll<HTMLElement>('[data-detail]')];
+		const pagerItems = [...root.querySelectorAll<HTMLButtonElement>('[data-pager-item]')];
 		const stage = root.querySelector<HTMLElement>('.carousel-stage');
 		const metaBar = root.querySelector<HTMLElement>('.carousel-meta');
 		const controls = root.querySelector<HTMLElement>('[data-carousel-controls]');
@@ -705,6 +786,32 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 
 		function activeDetailEl() {
 			return details.find((item) => Number(item.dataset.index) === active);
+		}
+
+		/**
+		 * Subgrid articles cannot create implicit rows — their track count is the
+		 * parent span. Probe with spare tracks, then read the last occupied line.
+		 */
+		function measureActiveDetailRows() {
+			const detail = activeDetailEl();
+			const declared = declaredDetailRows(detail);
+			const article = detail?.querySelector<HTMLElement>('[data-row-span]');
+			if (!detail || !article || !panel) return declared;
+
+			root.style.gridRow = `1 / span ${stageRows + DETAIL_ROW_PROBE}`;
+			panel.style.gridRow = `span ${DETAIL_ROW_PROBE}`;
+			detail.style.gridRow = `span ${DETAIL_ROW_PROBE}`;
+			article.style.gridRow = `span ${DETAIL_ROW_PROBE}`;
+			void article.offsetHeight;
+
+			const used = usedGridRows(article);
+			if (used <= 0) return declared;
+
+			const mobile = window.matchMedia('(max-width: 1023px)').matches;
+			if (mobile) article.dataset.rowSpanMobile = String(used);
+			else article.dataset.rowSpan = String(used);
+
+			return used;
 		}
 
 		function setDetailAlpha(value: number) {
@@ -819,9 +926,12 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 			/** Override `expanded` when settling mid-toggle (openDetail baseline). */
 			layout?: 'collapsed' | 'expanded';
 		}) {
-			const detail = details.find((item) => Number(item.dataset.index) === active);
-			const detailRows = activeDetailRows(detail);
 			const layout = options?.layout ?? (expanded ? 'expanded' : 'collapsed');
+			const willShowPanel =
+				options?.panelRows !== undefined ? options.panelRows > 0 : layout === 'expanded';
+			const detailRows = willShowPanel
+				? measureActiveDetailRows()
+				: declaredDetailRows(activeDetailEl());
 			const panelRows =
 				options?.panelRows !== undefined
 					? options.panelRows
@@ -955,7 +1065,6 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 			killExpandAnimations();
 
 			const detail = activeDetailEl();
-			const detailRows = activeDetailRows(detail);
 
 			// Keep expanded WIDTH while dismissing fill + detail shell
 			root.dataset.expanded = 'true';
@@ -964,7 +1073,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 				gsap.set(metaBar, { backgroundColor: 'var(--color-voi-white)' });
 			}
 			if (panel && !panel.hidden) {
-				syncRowSpans({ panelRows: detailRows, retainLayout: true });
+				syncRowSpans({ retainLayout: true, layout: 'expanded' });
 			} else {
 				syncRowSpans({ panelRows: 0, retainLayout: true });
 			}
@@ -1106,6 +1215,11 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 				detail.hidden = Number(detail.dataset.index) !== active;
 			}
 
+			for (const item of pagerItems) {
+				const isActive = Number(item.dataset.index) === active;
+				item.setAttribute('aria-current', isActive ? 'true' : 'false');
+			}
+
 			applyExpandedChrome(expanded);
 			if (panel) panel.hidden = !expanded;
 			syncRowSpans();
@@ -1137,6 +1251,18 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		function goNext() {
 			active = wrapIndex(active + 1, count);
 			navigate('next');
+			syncUrl();
+		}
+
+		function goTo(index: number) {
+			const target = wrapIndex(index, count);
+			if (target === active) return;
+			const forward = (target - active + count) % count;
+			const backward = (active - target + count) % count;
+			active = target;
+			if (forward === 1) navigate('next');
+			else if (backward === 1) navigate('prev');
+			else navigate('init');
 			syncUrl();
 		}
 
@@ -1190,6 +1316,12 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 
 		prev?.addEventListener('click', goPrev);
 		next?.addEventListener('click', goNext);
+
+		for (const item of pagerItems) {
+			item.addEventListener('click', () => {
+				goTo(Number(item.dataset.index));
+			});
+		}
 
 		toggle?.addEventListener('click', () => {
 			if (expanded) {

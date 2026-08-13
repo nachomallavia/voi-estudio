@@ -8,14 +8,20 @@ import g05 from '../../content/proyectos/escobar/g-05.jpg';
 import g06 from '../../content/proyectos/escobar/g-06.jpg';
 import g07 from '../../content/proyectos/escobar/g-07.jpg';
 import g08 from '../../content/proyectos/escobar/g-08.jpg';
+
+import escobar01 from '../../assets/obras/escobar/· San Matías · (2).jpg'
+import escobar02 from '../../assets/obras/escobar/· San Matías · (28).jpg'
+import escobar03 from '../../assets/obras/escobar/· San Matías · (47).jpg'
+import escobar04 from '../../assets/obras/escobar/· San Matías · (75).jpg'
+import escobar05 from '../../assets/obras/escobar/· San Matías · (53).jpg'
 ---
 
 <article
 	class="project-detail col-span-full grid grid-cols-subgrid grid-rows-subgrid bg-voi-white"
-	data-row-span="9"
-	data-row-span-mobile="15"
+	data-row-span="4"
+	data-row-span-mobile="19"
 >
-	<div class="col-span-full row-span-2 flex flex-col gap-5 px-5 pt-15 font-libertad-mono text-base text-pretty leading-normal text-voi-black lg:col-span-3 lg:col-start-1 border-b border-voi-orange">
+	<div class="col-span-full row-span-3 lg:row-span-2 flex flex-col gap-5 px-5 pt-15 font-libertad-mono text-base text-pretty leading-normal text-voi-black lg:col-span-3 lg:col-start-1 border-b border-voi-orange lg:pr-20">
 		<p class="text-justify">
 			La vivienda contemplaba la necesidad de una familia habitando en fin de semana, por ello era
 			importante el bajo mantenimiento de los materiales, utilizando hormigón, ladrillo y herrería
@@ -30,7 +36,7 @@ import g08 from '../../content/proyectos/escobar/g-08.jpg';
 
 	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-3 lg:col-start-4">
 		<Image
-			src={g02}
+			src={escobar01}
 			alt=""
 			widths={[496, 752, 1009]}
 			sizes="(max-width: 1024px) 100vw, 40vw"
@@ -42,7 +48,7 @@ import g08 from '../../content/proyectos/escobar/g-08.jpg';
 
 	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-4 lg:col-start-1">
 		<Image
-			src={g03}
+			src={escobar03}
 			alt=""
 			widths={[752, 1009, 1400]}
 			sizes="(max-width: 1024px) 100vw, 58vw"
@@ -51,9 +57,9 @@ import g08 from '../../content/proyectos/escobar/g-08.jpg';
 		/>
 	</figure>
 
-	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-3 lg:col-start-5">
 		<Image
-			src={g03}
+			src={escobar02}
 			alt=""
 			widths={[496, 752, 1009]}
 			sizes="(max-width: 1024px) 100vw, 40vw"
@@ -62,9 +68,9 @@ import g08 from '../../content/proyectos/escobar/g-08.jpg';
 		/>
 	</figure>
 
-	<figure class="m-0 col-span-1 row-span-1 overflow-hidden lg:col-span-2 lg:col-start-1">
+	<figure class="m-0 col-span-2 row-span-2 overflow-hidden lg:col-span-2 lg:col-start-1">
 		<Image
-			src={g04}
+			src={escobar05}
 			alt=""
 			widths={[320, 496]}
 			sizes="(max-width: 1024px) 50vw, 22vw"
@@ -73,9 +79,9 @@ import g08 from '../../content/proyectos/escobar/g-08.jpg';
 		/>
 	</figure>
 
-	<figure class="m-0 col-span-1 row-span-1 overflow-hidden lg:col-span-2 lg:col-start-3">
+	<figure class="m-0 col-span-2 row-span-2 overflow-hidden lg:col-span-3 lg:col-start-3">
 		<Image
-			src={g05}
+			src={escobar04}
 			alt=""
 			widths={[320, 496]}
 			sizes="(max-width: 1024px) 50vw, 22vw"
@@ -84,45 +90,36 @@ import g08 from '../../content/proyectos/escobar/g-08.jpg';
 		/>
 	</figure>
 
-	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-3 lg:col-start-5">
-		<Image
-			src={g06}
-			alt=""
-			widths={[496, 752]}
-			sizes="(max-width: 1024px) 100vw, 40vw"
-			class="h-full w-full object-cover"
-			loading="lazy"
-		/>
-	</figure>
+	
 
-	<div class="col-span-full row-span-1 grid grid-cols-subgrid lg:col-span-4 lg:col-start-1">
-		<div class="col-span-1 lg:col-span-2">
-			<h3 class="mb-2 font-libertad-mono text-xl text-voi-black">Tipología</h3>
-			<p class="text-[15px] leading-normal text-voi-black/90">
+	<div class="col-span-full row-span-2 grid grid-cols-subgrid lg:col-span-4 lg:col-start-1">
+		<div class="col-span-1 lg:col-span-2 px-5">
+			<h3 class="mb-2 font-libertad-mono text-lg text-voi-black">Tipología</h3>
+			<p class="text-sm text-pretty leading-normal text-voi-black/90">
 				Vivienda 1× · 272 m². Pensada para una familia en fin de semana, con bajo mantenimiento y
 				espacios versátiles.
 			</p>
 		</div>
-		<div class="col-span-1 lg:col-span-2">
-			<h3 class="mb-2 font-libertad-mono text-xl text-voi-black">Materiales</h3>
-			<p class="text-[15px] leading-normal text-voi-black/90">
+		<div class="col-span-1 lg:col-span-2 px-5">
+			<h3 class="mb-2 font-libertad-mono text-lg text-voi-black">Materiales</h3>
+			<p class="text-sm text-pretty leading-normal text-voi-black/90">
 				Hormigón, ladrillo y herrería oscura, con orientación norte, aleros y regulación de
 				aberturas.
 			</p>
 		</div>
 	</div>
 
-	<div class="col-span-full row-span-2 grid grid-cols-subgrid grid-rows-subgrid lg:col-span-4 lg:col-start-1">
-		<div class=" bg-voi-orange col-span-1 row-span-1 lg:col-span-1 lg:row-span-2" aria-hidden="true"></div>
-		<blockquote class="relative z-10 py-10 pl-20 pr-4 font-libertad-mono text-voi-black">
-			<p class="text-3xl leading-snug">
+	<div class=" px-5 col-span-full row-span-3 grid grid-cols-subgrid grid-rows-subgrid lg:row-span-2  ">
+		<div class=" bg-voi-orange col-span-1 row-span-1 md:col-span-2 md:row-span-2 " aria-hidden="true"></div>
+		<blockquote class="z-10  font-libertad-mono text-voi-black col-span-full md:col-span-3 flex flex-col justify-start lg:justify-center row-span-2">
+			<p class=" text-2xl md:text-3xl text-pretty leading-snug">
 				“La vivienda contemplaba la necesidad de una familia habitando en fin de semana.”
 			</p>
-			<footer class="mt-8 text-xl">VOI Estudio — proyecto y obra</footer>
+			<footer class="mt-4 lg:mt-8 text-xl">VOI Estudio — proyecto y obra</footer>
 		</blockquote>
 	</div>
 
-	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+	<figure class="m-0 col-span-full row-span-3 overflow-hidden lg:col-span-3 lg:row-span-2 ">
 		<Image
 			src={g07}
 			alt=""
@@ -133,14 +130,5 @@ import g08 from '../../content/proyectos/escobar/g-08.jpg';
 		/>
 	</figure>
 
-	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
-		<Image
-			src={g08}
-			alt=""
-			widths={[496, 752]}
-			sizes="(max-width: 1024px) 100vw, 40vw"
-			class="h-full w-full object-cover"
-			loading="lazy"
-		/>
-	</figure>
+	
 </article>
