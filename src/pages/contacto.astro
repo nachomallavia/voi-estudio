@@ -1,11 +1,154 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import BentStripFilled from '../assets/contacto/bent-strip-filled.svg';
+import InstagramIcon from '../assets/contacto/instagram.svg';
+import EnvelopeIcon from '../assets/contacto/envelope.svg';
 ---
 
 <Layout bgColor="bg-voi-green">
-	<div class="col-span-full row-start-2 row-span-5 z-10 relative grid grid-cols-subgrid grid-rows-subgrid">
-		<svg class="absolute bottom-0 left-0" width="568" height="475" viewBox="0 0 568 475" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path d="M567.5 26.6104L211.685 261.64L211.46 261.787L211.46 323.415L567.5 323.415L567.5 1024.02L383.154 1208.5H-17.5L-17.5 453.748L200.523 235.566L567.5 0.912109V26.6104Z" fill="#FF6430" stroke="#FF6430"/>
-		</svg>
+	<!-- <div
+		class="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+		aria-hidden="true"
+	>
+		<BentStripFilled
+			class="absolute -left-4 top-[61vh] h-auto w-[586px] max-w-none text-voi-orange"
+		/>
+	</div> -->
+
+	<div
+		class="col-span-full row-[1/span_8] z-10 relative grid grid-cols-subgrid grid-rows-subgrid font-libertad-mono text-voi-black lg:row-[1/span_6]"
+	>
+		<aside
+			class="col-span-full row-start-3 row-span-1 z-10 flex flex-col gap-4 lg:col-span-1 lg:col-start-2 "
+		>
+			<a
+				href="https://www.instagram.com/estudiovoi"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="flex items-center gap-2 text-sm tracking-[-0.06em] whitespace-nowrap hover:text-voi-orange transition-colors"
+			>
+				<span class="flex size-5 shrink-0 items-center justify-center overflow-clip">
+					<InstagramIcon class="size-full" />
+				</span>
+				@estudiovoi
+			</a>
+			<a
+				href="mailto:info@voi-estudio.com.ar"
+				class="flex items-center gap-2 text-sm tracking-[-0.06em] whitespace-nowrap hover:text-voi-orange transition-colors"
+			>
+				<span class="flex h-[15px] w-5 shrink-0 items-center justify-center overflow-clip">
+					<EnvelopeIcon class="size-full" />
+				</span>
+				info@voi-estudio.com.ar
+			</a>
+		</aside>
+
+		<section
+			class="col-span-full row-start-4 row-span-5 z-10 px-2 pb-20 lg:col-span-2 lg:col-start-4 lg:row-start-2 lg:row-span-4 lg:px-0 lg:pb-0"
+		>
+			<h1 class="text-3xl leading-none uppercase">Contacto</h1>
+			<p class="mt-5 max-w-[30rem] text-lg leading-normal">
+				Dejanos tu nombre, un mail y tu mensaje para que nos comuniquemos con vos.
+			</p>
+
+			<form id="contacto-form" class="mt-10 flex w-full max-w-30rem flex-col gap-5" novalidate>
+				<label class="flex flex-col gap-2 text-lg leading-normal">
+					Nombre
+					<input
+						type="text"
+						name="nombre"
+						autocomplete="name"
+						required
+						maxlength="120"
+						class="h-[59px] w-full appearance-none border border-voi-black bg-transparent px-3 text-lg text-voi-black outline-none transition-colors focus:border-voi-orange"
+					/>
+				</label>
+				<label class="flex flex-col gap-2 text-lg leading-normal">
+					E-mail
+					<input
+						type="email"
+						name="email"
+						autocomplete="email"
+						required
+						maxlength="254"
+						class="h-[59px] w-full appearance-none border border-voi-black bg-transparent px-3 text-lg text-voi-black outline-none transition-colors focus:border-voi-orange"
+					/>
+				</label>
+				<label class="flex flex-col gap-2 text-lg leading-normal">
+					Mensaje
+					<textarea
+						name="mensaje"
+						required
+						maxlength="5000"
+						class="h-[140px] w-full resize-none appearance-none border border-voi-black bg-transparent px-3 py-3 text-lg text-voi-black outline-none transition-colors focus:border-voi-orange"
+					></textarea>
+				</label>
+				<div class="flex items-center justify-between gap-4">
+					<p id="contacto-status" class="text-lg leading-normal" aria-live="polite"></p>
+					<button
+						type="submit"
+						class="ml-auto h-[51px] w-[169px] shrink-0 bg-voi-grey text-lg text-voi-black whitespace-nowrap transition-colors hover:bg-voi-orange active:scale-90 active:bg-voi-black active:text-voi-white disabled:opacity-60"
+					>
+						ENVIAR MENSAJE
+					</button>
+				</div>
+			</form>
+		</section>
+
+		<div class="col-span-1 col-start-7 row-start-2 row-span-4 hidden items-center justify-center lg:flex">
+			<p
+				class="pointer-events-none z-20 origin-center -rotate-90 whitespace-nowrap text-lg text-voi-black"
+			>
+				BUENOS AIRES, AR
+			</p>
+		</div>
 	</div>
 </Layout>
+
+<script>
+	function bindContactForm() {
+		const form = document.getElementById('contacto-form');
+		if (!(form instanceof HTMLFormElement) || form.dataset.bound === 'true') return;
+		form.dataset.bound = 'true';
+
+		const status = document.getElementById('contacto-status');
+		const button = form.querySelector('button[type="submit"]');
+
+		form.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			if (!form.reportValidity()) return;
+
+			const data = new FormData(form);
+			const nombre = String(data.get('nombre') ?? '').trim();
+			const email = String(data.get('email') ?? '').trim();
+			const mensaje = String(data.get('mensaje') ?? '').trim();
+
+			if (button instanceof HTMLButtonElement) button.disabled = true;
+			if (status) status.textContent = '';
+
+			try {
+				const response = await fetch('/api/contacto', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ nombre, email, mensaje }),
+				});
+				const result = (await response.json()) as { ok?: boolean; error?: string };
+
+				if (!response.ok || !result.ok) {
+					if (status) status.textContent = result.error || 'No se pudo enviar. Probá de nuevo.';
+					return;
+				}
+
+				form.reset();
+				if (status) status.textContent = 'Mensaje enviado.';
+			} catch {
+				if (status) status.textContent = 'No se pudo enviar. Probá de nuevo.';
+			} finally {
+				if (button instanceof HTMLButtonElement) button.disabled = false;
+			}
+		});
+	}
+
+	bindContactForm();
+	document.addEventListener('astro:page-load', bindContactForm);
+</script>

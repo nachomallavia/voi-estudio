@@ -2,6 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 import Logo from '../assets/logo.svg';
+import Footer from '../components/Footer.astro';
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 const links = [
@@ -69,6 +70,7 @@ const linkClass =
 				</div>
 				<slot />
 			</div>
+			<Footer pathname={pathname} links={links} />
 		</main>
 	</body>
 </html>

@@ -1,33 +1,33 @@
 ---
 import { Image } from 'astro:assets';
-import g01 from '../../content/proyectos/saavedra/g-01.jpg';
-import g02 from '../../content/proyectos/saavedra/g-02.jpg';
-import g03 from '../../content/proyectos/saavedra/g-03.jpg';
-import g04 from '../../content/proyectos/saavedra/g-04.jpg';
-import g05 from '../../content/proyectos/saavedra/g-05.jpg';
-import g06 from '../../content/proyectos/saavedra/g-06.jpg';
-import g07 from '../../content/proyectos/saavedra/g-07.jpg';
-import g08 from '../../content/proyectos/saavedra/g-08.jpg';
+import img01 from '../../assets/obras/saavedra/01.jpg';
+import img02 from '../../assets/obras/saavedra/02.jpg';
+import img03 from '../../assets/obras/saavedra/03.jpg';
+import img04 from '../../assets/obras/saavedra/04.jpg';
+import img05 from '../../assets/obras/saavedra/05.jpg';
+import img06 from '../../assets/obras/saavedra/06.jpg';
+import img07 from '../../assets/obras/saavedra/07.jpg';
+import img08 from '../../assets/obras/saavedra/08.jpg';
 ---
 
 <article
-	class="project-detail col-span-full grid grid-cols-subgrid grid-rows-subgrid"
-	data-row-span="6"
-	data-row-span-mobile="11"
+	class="project-detail col-span-full grid grid-cols-subgrid grid-rows-subgrid bg-voi-white"
+	data-row-span="4"
+	data-row-span-mobile="19"
 >
-	<div class="col-span-full row-span-1 font-libertad-mono text-lg leading-relaxed text-voi-black lg:col-span-3 lg:col-start-2">
-		<p>
+	<div class="col-span-full row-span-3 lg:row-span-2 flex flex-col gap-5 px-5 pt-15 font-libertad-mono text-base text-pretty leading-normal text-voi-black lg:col-span-3 lg:col-start-1 border-b border-voi-orange lg:pr-20">
+		<p class="text-justify">
 			El proyecto está emplazado en la Ciudad de Buenos Aires, en una zona que se encuentra en plena
 			transformación, en crecimiento social y comercial. Sin embargo sigue identificándose con la
 			esencia del barrio porteño, por esto proyectamos un edificio con materiales que tienen
 			reminiscencia a nuestra infancia, a las casas de nuestros abuelos.
 		</p>
-		<p class="mt-6">Barrio de tango.</p>
+		<p class="text-justify">Barrio de tango.</p>
 	</div>
 
-	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-3 lg:col-start-4">
 		<Image
-			src={g01}
+			src={img01}
 			alt=""
 			widths={[496, 752, 1009]}
 			sizes="(max-width: 1024px) 100vw, 40vw"
@@ -35,10 +35,11 @@ import g08 from '../../content/proyectos/saavedra/g-08.jpg';
 			loading="lazy"
 		/>
 	</figure>
+	<div class="col-span-full row-span-1 min-h-44 bg-voi-orange"></div>
 
-	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-4 lg:col-start-1">
+	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-3 lg:row-span-3 lg:col-start-1">
 		<Image
-			src={g02}
+			src={img03}
 			alt=""
 			widths={[752, 1009, 1400]}
 			sizes="(max-width: 1024px) 100vw, 58vw"
@@ -47,9 +48,9 @@ import g08 from '../../content/proyectos/saavedra/g-08.jpg';
 		/>
 	</figure>
 
-	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-2 lg:row-span-3 ">
 		<Image
-			src={g03}
+			src={img02}
 			alt=""
 			widths={[496, 752, 1009]}
 			sizes="(max-width: 1024px) 100vw, 40vw"
@@ -58,9 +59,9 @@ import g08 from '../../content/proyectos/saavedra/g-08.jpg';
 		/>
 	</figure>
 
-	<figure class="m-0 col-span-1 row-span-1 overflow-hidden lg:col-span-2 lg:col-start-1">
+	<figure class="m-0 col-span-2 row-span-2 overflow-hidden lg:col-span-2 lg:col-start-1">
 		<Image
-			src={g04}
+			src={img05}
 			alt=""
 			widths={[320, 496]}
 			sizes="(max-width: 1024px) 50vw, 22vw"
@@ -69,46 +70,46 @@ import g08 from '../../content/proyectos/saavedra/g-08.jpg';
 		/>
 	</figure>
 
-	<figure class="m-0 col-span-1 row-span-1 overflow-hidden lg:col-span-2 lg:col-start-3">
+	<figure class="m-0 col-span-2 row-span-2 overflow-hidden lg:col-span-3 lg:col-start-3">
 		<Image
-			src={g05}
+			src={img04}
 			alt=""
 			widths={[320, 496]}
 			sizes="(max-width: 1024px) 50vw, 22vw"
-			class="h-full w-full object-cover"
-			loading="lazy"
-		/>
-	</figure>
-
-	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-3 lg:col-start-5">
-		<Image
-			src={g06}
-			alt=""
-			widths={[496, 752]}
-			sizes="(max-width: 1024px) 100vw, 40vw"
 			class="h-full w-full object-cover"
 			loading="lazy"
 		/>
 	</figure>
 
 	<div class="col-span-full row-span-1 grid grid-cols-subgrid lg:col-span-4 lg:col-start-1">
-		<div class="col-span-1 lg:col-span-2">
-			<h3 class="mb-2 font-libertad-mono text-xl text-voi-black">Tipología</h3>
-			<p class="text-[15px] leading-normal text-voi-black/90">
+		<div class="col-span-1 lg:col-span-2 px-5">
+			<h3 class="mb-2 font-libertad-mono text-lg text-voi-black">Tipología</h3>
+			<p class="text-sm text-pretty leading-normal text-voi-black/90">
 				Vivienda 10× · 791 m². Edificio en zona de transformación social y comercial.
 			</p>
 		</div>
-		<div class="col-span-1 lg:col-span-2">
-			<h3 class="mb-2 font-libertad-mono text-xl text-voi-black">Enfoque</h3>
-			<p class="text-[15px] leading-normal text-voi-black/90">
-				Materiales con reminiscencia porteña, ligados a la esencia del barrio de tango.
+		<div class="col-span-1 lg:col-span-2 px-5">
+			<h3 class="mb-2 font-libertad-mono text-lg text-voi-black">Materiales</h3>
+			<p class="text-sm text-pretty leading-normal text-voi-black/90">
+				Ladrillo, hormigón visto y herrería, con reminiscencia porteña ligada a la esencia del
+				barrio de tango.
 			</p>
 		</div>
 	</div>
 
-	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+	<div class=" px-5 col-span-full row-span-3 grid grid-cols-subgrid grid-rows-subgrid lg:row-span-3  ">
+		<div class=" bg-voi-orange col-span-1 row-span-1 md:col-span-2 md:row-span-2 " aria-hidden="true"></div>
+		<blockquote class="z-10  font-libertad-mono text-voi-black col-span-full md:col-span-3 flex flex-col justify-start lg:justify-center row-span-2">
+			<p class=" text-2xl md:text-3xl text-pretty leading-snug">
+				“Proyectamos un edificio con materiales que tienen reminiscencia a nuestra infancia.”
+			</p>
+			<footer class="mt-4 lg:mt-8 text-xl">VOI Estudio — proyecto y obra</footer>
+		</blockquote>
+	</div>
+
+	<figure class="m-0 col-span-full row-span-3 overflow-hidden lg:col-span-3 lg:row-span-2 ">
 		<Image
-			src={g07}
+			src={img06}
 			alt=""
 			widths={[496, 752]}
 			sizes="(max-width: 1024px) 100vw, 40vw"
@@ -116,10 +117,19 @@ import g08 from '../../content/proyectos/saavedra/g-08.jpg';
 			loading="lazy"
 		/>
 	</figure>
-
-	<figure class="m-0 col-span-full row-span-1 overflow-hidden lg:col-span-3 lg:col-start-5">
+	<figure class="m-0 col-span-full row-span-3 overflow-hidden lg:col-span-2 lg:row-span-2 ">
 		<Image
-			src={g08}
+			src={img07}
+			alt=""
+			widths={[496, 752]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+	<figure class="m-0 col-span-full row-span-3 overflow-hidden lg:col-span-full lg:row-span-3 ">
+		<Image
+			src={img08}
 			alt=""
 			widths={[496, 752]}
 			sizes="(max-width: 1024px) 100vw, 40vw"

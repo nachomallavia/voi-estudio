@@ -1,19 +1,13 @@
 ---
 import { Image } from 'astro:assets';
-import g01 from '../../content/proyectos/escobar/g-01.jpg';
-import g02 from '../../content/proyectos/escobar/g-02.jpg';
-import g03 from '../../content/proyectos/escobar/g-03.jpg';
-import g04 from '../../content/proyectos/escobar/g-04.jpg';
-import g05 from '../../content/proyectos/escobar/g-05.jpg';
-import g06 from '../../content/proyectos/escobar/g-06.jpg';
-import g07 from '../../content/proyectos/escobar/g-07.jpg';
-import g08 from '../../content/proyectos/escobar/g-08.jpg';
-
-import escobar01 from '../../assets/obras/escobar/· San Matías · (2).jpg'
-import escobar02 from '../../assets/obras/escobar/· San Matías · (28).jpg'
-import escobar03 from '../../assets/obras/escobar/· San Matías · (47).jpg'
-import escobar04 from '../../assets/obras/escobar/· San Matías · (75).jpg'
-import escobar05 from '../../assets/obras/escobar/· San Matías · (53).jpg'
+import img01 from '../../assets/obras/escobar/01.jpg';
+import img02 from '../../assets/obras/escobar/02.jpg';
+import img03 from '../../assets/obras/escobar/03.jpg';
+import img04 from '../../assets/obras/escobar/04.jpg';
+import img05 from '../../assets/obras/escobar/05.jpg';
+import img06 from '../../assets/obras/escobar/06.jpg';
+import img07 from '../../assets/obras/escobar/07.jpg';
+import img08 from '../../assets/obras/escobar/08.jpg';
 ---
 
 <article
@@ -36,7 +30,7 @@ import escobar05 from '../../assets/obras/escobar/· San Matías · (53).jpg'
 
 	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-3 lg:col-start-4">
 		<Image
-			src={escobar01}
+			src={img01}
 			alt=""
 			widths={[496, 752, 1009]}
 			sizes="(max-width: 1024px) 100vw, 40vw"
@@ -46,9 +40,9 @@ import escobar05 from '../../assets/obras/escobar/· San Matías · (53).jpg'
 	</figure>
 	<div class="col-span-full row-span-1 min-h-44 bg-voi-orange"></div>
 
-	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-4 lg:col-start-1">
+	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-3 lg:row-span-3 lg:col-start-1">
 		<Image
-			src={escobar03}
+			src={img03}
 			alt=""
 			widths={[752, 1009, 1400]}
 			sizes="(max-width: 1024px) 100vw, 58vw"
@@ -57,9 +51,9 @@ import escobar05 from '../../assets/obras/escobar/· San Matías · (53).jpg'
 		/>
 	</figure>
 
-	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-3 lg:col-start-5">
+	<figure class="m-0 col-span-full row-span-2 overflow-hidden lg:col-span-2 lg:row-span-3 ">
 		<Image
-			src={escobar02}
+			src={img02}
 			alt=""
 			widths={[496, 752, 1009]}
 			sizes="(max-width: 1024px) 100vw, 40vw"
@@ -70,7 +64,7 @@ import escobar05 from '../../assets/obras/escobar/· San Matías · (53).jpg'
 
 	<figure class="m-0 col-span-2 row-span-2 overflow-hidden lg:col-span-2 lg:col-start-1">
 		<Image
-			src={escobar05}
+			src={img05}
 			alt=""
 			widths={[320, 496]}
 			sizes="(max-width: 1024px) 50vw, 22vw"
@@ -81,7 +75,7 @@ import escobar05 from '../../assets/obras/escobar/· San Matías · (53).jpg'
 
 	<figure class="m-0 col-span-2 row-span-2 overflow-hidden lg:col-span-3 lg:col-start-3">
 		<Image
-			src={escobar04}
+			src={img04}
 			alt=""
 			widths={[320, 496]}
 			sizes="(max-width: 1024px) 50vw, 22vw"
@@ -92,7 +86,7 @@ import escobar05 from '../../assets/obras/escobar/· San Matías · (53).jpg'
 
 	
 
-	<div class="col-span-full row-span-2 grid grid-cols-subgrid lg:col-span-4 lg:col-start-1">
+	<div class="col-span-full row-span-1 grid grid-cols-subgrid lg:col-span-4 lg:col-start-1">
 		<div class="col-span-1 lg:col-span-2 px-5">
 			<h3 class="mb-2 font-libertad-mono text-lg text-voi-black">Tipología</h3>
 			<p class="text-sm text-pretty leading-normal text-voi-black/90">
@@ -109,7 +103,7 @@ import escobar05 from '../../assets/obras/escobar/· San Matías · (53).jpg'
 		</div>
 	</div>
 
-	<div class=" px-5 col-span-full row-span-3 grid grid-cols-subgrid grid-rows-subgrid lg:row-span-2  ">
+	<div class=" px-5 col-span-full row-span-3 grid grid-cols-subgrid grid-rows-subgrid lg:row-span-3  ">
 		<div class=" bg-voi-orange col-span-1 row-span-1 md:col-span-2 md:row-span-2 " aria-hidden="true"></div>
 		<blockquote class="z-10  font-libertad-mono text-voi-black col-span-full md:col-span-3 flex flex-col justify-start lg:justify-center row-span-2">
 			<p class=" text-2xl md:text-3xl text-pretty leading-snug">
@@ -121,7 +115,27 @@ import escobar05 from '../../assets/obras/escobar/· San Matías · (53).jpg'
 
 	<figure class="m-0 col-span-full row-span-3 overflow-hidden lg:col-span-3 lg:row-span-2 ">
 		<Image
-			src={g07}
+			src={img06}
+			alt=""
+			widths={[496, 752]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+	<figure class="m-0 col-span-full row-span-3 overflow-hidden lg:col-span-2 lg:row-span-2 ">
+		<Image
+			src={img07}
+			alt=""
+			widths={[496, 752]}
+			sizes="(max-width: 1024px) 100vw, 40vw"
+			class="h-full w-full object-cover"
+			loading="lazy"
+		/>
+	</figure>
+	<figure class="m-0 col-span-full row-span-3 overflow-hidden lg:col-span-full lg:row-span-3 ">
+		<Image
+			src={img08}
 			alt=""
 			widths={[496, 752]}
 			sizes="(max-width: 1024px) 100vw, 40vw"

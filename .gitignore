@@ -6,6 +6,7 @@ dist/
 
 # dependencies
 node_modules/
+.pnpm-store/
 
 # logs
 npm-debug.log*
@@ -24,5 +25,5 @@ pnpm-debug.log*
 .idea/
 .vercel
 
-# obras folder
-obras/
+# raw source dump at repo root (processed copies live in src/assets/obras)
+/obras/

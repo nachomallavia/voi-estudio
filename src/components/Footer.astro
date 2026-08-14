@@ -1,0 +1,77 @@
+---
+import FooterShard from '../assets/footer/shard.svg';
+import LogoOrange from '../assets/footer/logo-orange.svg';
+import InstagramIcon from '../assets/contacto/instagram.svg';
+import EnvelopeIcon from '../assets/contacto/envelope.svg';
+
+interface Props {
+	pathname: string;
+	links: readonly { href: string; label: string }[];
+}
+
+const { pathname, links } = Astro.props;
+
+const linkClass =
+	'block w-full text-right pr-2 text-voi-white text-base font-libertad-mono border border-transparent hover:border-current transition-[border-color] duration-200 ease-in-out';
+---
+
+<footer class="mt-20 relative font-libertad-mono text-voi-white">
+	<div class="flex items-stretch" aria-hidden="true">
+		<FooterShard class="h-[clamp(5.5rem,8.5vw,11.0625rem)] w-auto shrink-0 text-voi-black" />
+		<div class="min-w-0 flex-1 bg-voi-black"></div>
+	</div>
+
+	<div class="bg-voi-black">
+		<div
+			class="grid grid-cols-2 gap-4 px-0 pb-8 pt-4 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 lg:pb-24 lg:pt-16"
+		>
+			<div class="col-span-1 col-start-1 flex flex-col gap-8 sm:col-span-2 lg:col-span-2 lg:col-start-2">
+				<a href="/" class="inline-block w-[min(28.6rem,85%)] max-w-full" aria-label="VOI Estudio">
+					<LogoOrange class="h-auto w-full" />
+				</a>
+
+				<address class="flex flex-col gap-4 not-italic lg:pl-[clamp(0rem,9vw,10.8rem)]">
+					<a
+						href="https://www.instagram.com/estudiovoi"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="flex items-center gap-4 text-lg tracking-[-0.06em] whitespace-nowrap transition-colors hover:text-voi-orange"
+					>
+						<span class="flex size-5 shrink-0 items-center justify-center overflow-clip">
+							<InstagramIcon class="size-full" />
+						</span>
+						@estudiovoi
+					</a>
+					<a
+						href="mailto:info@voi-estudio.com.ar"
+						class="flex items-center gap-4 text-lg tracking-[-0.06em] whitespace-nowrap transition-colors hover:text-voi-orange"
+					>
+						<span class="flex h-[15px] w-5 shrink-0 items-center justify-center overflow-clip">
+							<EnvelopeIcon class="size-full" />
+						</span>
+						info@voi-estudio.com.ar
+					</a>
+				</address>
+			</div>
+
+			<nav class="col-span-1 col-start-2 self-start sm:col-start-3 md:col-start-5 lg:col-start-6" aria-label="Pie de página">
+				<ul class="flex flex-col items-end justify-start">
+					{links.map(({ href, label }) => {
+						const isActive = pathname === href;
+						return (
+							<li class="block w-full text-right">
+								<a
+									href={href}
+									class:list={[linkClass, isActive && 'bg-voi-orange !text-voi-black']}
+									aria-current={isActive ? 'page' : undefined}
+								>
+									{label}
+								</a>
+							</li>
+						);
+					})}
+				</ul>
+			</nav>
+		</div>
+	</div>
+</footer>
