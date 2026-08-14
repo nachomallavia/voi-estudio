@@ -1,3 +1,6 @@
-<svg viewBox="0 0 673 177" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-	<path d="M162.354 0V112.039H143.268L69.5214 0H0V177H673V0H162.354Z" fill="currentColor"/>
+<svg viewBox="0 0 673 177" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" overflow="visible">
+	<path
+		d="M162.354 0V112.039H143.268L69.5214 0H-2V179H675V0H162.354Z"
+		fill="currentColor"
+	/>
 </svg>

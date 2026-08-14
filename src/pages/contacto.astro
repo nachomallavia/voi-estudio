@@ -1,8 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import BentStripFilled from '../assets/contacto/bent-strip-filled.svg';
+
 import InstagramIcon from '../assets/contacto/instagram.svg';
 import EnvelopeIcon from '../assets/contacto/envelope.svg';
+import VoiOutlineAlt from '../assets/voi-outline-alt.svg';
 ---
 
 <Layout bgColor="bg-voi-green">
@@ -25,7 +26,7 @@ import EnvelopeIcon from '../assets/contacto/envelope.svg';
 				href="https://www.instagram.com/estudiovoi"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="flex items-center gap-2 text-sm tracking-[-0.06em] whitespace-nowrap hover:text-voi-orange transition-colors"
+				class="flex items-center gap-2 text-sm tracking-[-0.06em] whitespace-nowrap hover:text-voi-white transition-colors"
 			>
 				<span class="flex size-5 shrink-0 items-center justify-center overflow-clip">
 					<InstagramIcon class="size-full" />
@@ -34,7 +35,7 @@ import EnvelopeIcon from '../assets/contacto/envelope.svg';
 			</a>
 			<a
 				href="mailto:info@voi-estudio.com.ar"
-				class="flex items-center gap-2 text-sm tracking-[-0.06em] whitespace-nowrap hover:text-voi-orange transition-colors"
+				class="flex items-center gap-2 text-sm tracking-[-0.06em] whitespace-nowrap hover:text-voi-white transition-colors"
 			>
 				<span class="flex h-[15px] w-5 shrink-0 items-center justify-center overflow-clip">
 					<EnvelopeIcon class="size-full" />
@@ -44,10 +45,10 @@ import EnvelopeIcon from '../assets/contacto/envelope.svg';
 		</aside>
 
 		<section
-			class="col-span-full row-start-4 row-span-5 z-10 px-2 pb-20 lg:col-span-2 lg:col-start-4 lg:row-start-2 lg:row-span-4 lg:px-0 lg:pb-0"
+			class="col-span-full row-start-4 row-span-5 z-10 px-5 pt-5 pb-20 lg:col-span-2 lg:col-start-4 lg:row-start-2 lg:row-span-4  bg-voi-white"
 		>
 			<h1 class="text-3xl leading-none uppercase">Contacto</h1>
-			<p class="mt-5 max-w-[30rem] text-lg leading-normal">
+			<p class="mt-5 max-w-[30rem] text-base leading-normal">
 				Dejanos tu nombre, un mail y tu mensaje para que nos comuniquemos con vos.
 			</p>
 
@@ -87,7 +88,7 @@ import EnvelopeIcon from '../assets/contacto/envelope.svg';
 					<p id="contacto-status" class="text-lg leading-normal" aria-live="polite"></p>
 					<button
 						type="submit"
-						class="ml-auto h-[51px] w-[169px] shrink-0 bg-voi-grey text-lg text-voi-black whitespace-nowrap transition-colors hover:bg-voi-orange active:scale-90 active:bg-voi-black active:text-voi-white disabled:opacity-60"
+						class="ml-auto h-[51px] w-[169px] shrink-0 bg-voi-black text-lg text-voi-white whitespace-nowrap transition-colors hover:bg-voi-orange active:scale-90 active:bg-voi-black active:text-voi-white disabled:opacity-60"
 					>
 						ENVIAR MENSAJE
 					</button>
@@ -102,6 +103,14 @@ import EnvelopeIcon from '../assets/contacto/envelope.svg';
 				BUENOS AIRES, AR
 			</p>
 		</div>
+		<div
+				class="pointer-events-none relative hidden w-[28rem] lg:block"
+				aria-hidden="true"
+			>
+				<VoiOutlineAlt
+					class="absolute left-4 top-8 h-[50rem] w-auto max-w-none stroke-1 text-voi-orange/0 opacity-100 fill-voi-orange"
+				/>
+			</div>
 	</div>
 </Layout>
 

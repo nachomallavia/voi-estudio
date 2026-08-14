@@ -36,11 +36,11 @@ const ecosistema = [
 
 <Layout bgColor="bg-voi-white">
 	<div
-		class="col-span-full row-start-1 row-span-12 z-10 relative grid grid-cols-subgrid grid-rows-subgrid font-libertad-mono text-voi-black"
+		class="col-span-full row-[1/span_18] z-10 relative grid grid-cols-subgrid grid-rows-subgrid font-libertad-mono text-voi-black lg:row-[1/span_12]"
 	>
 		{/* Manifesto — Layout rows 3+ (below logo/nav) */}
 		<section
-			class="col-span-full row-start-3 row-span-5 z-10 px-2 lg:col-span-2 lg:col-start-2 lg:px-0"
+			class="col-span-full row-[3/span_5] z-10 px-5 lg:col-span-2 lg:col-start-2 lg:row-[3/span_5] lg:px-0"
 		>
 			<div class="text-base leading-6 space-y-6">
 				<p>
@@ -58,7 +58,7 @@ const ecosistema = [
 				Precisión y materialidad
 			</h2>
 
-			<div class="mt-6 text-lg leading-6 space-y-6">
+			<div class="mt-6 text-base leading-6 space-y-6">
 				<p>
 					Reflejamos la función a través de la precisión física. No hay decisiones arbitrarias en
 					nuestro proceso.
@@ -84,7 +84,7 @@ const ecosistema = [
 
 		{/* Partners — desktop: top-right beside brand; mobile: below manifesto */}
 		<section
-			class="col-span-full row-start-8 row-span-4 relative z-10 px-2 lg:row-start-1 pt-8 lg:row-span-5 lg:col-span-2 lg:col-start-5 lg:px-0"
+			class="col-span-full row-[8/span_4] relative z-10 px-5 pt-8 lg:row-[1/span_5] lg:col-span-2 lg:col-start-5 lg:px-0"
 		>
 			<div
 				class="pointer-events-none absolute -right-8 top-0 hidden h-full w-[28rem] text-voi-grey lg:block"
@@ -98,11 +98,11 @@ const ecosistema = [
 			<ul class="relative z-10 m-0 flex list-none flex-col gap-10 p-0 lg:gap-12 lg:pt-8">
 				{
 					partners.map(({ name, copy }) => (
-						<li class="flex items-start gap-6">
-							<div class="size-40 shrink-0 bg-voi-black" aria-hidden="true" />
-							<div class="flex flex-col">
+						<li class="flex shrink-0 items-start gap-4 sm:gap-6">
+							<div class="size-24 shrink-0 bg-voi-black sm:size-32 lg:size-40" aria-hidden="true" />
+							<div class="flex min-w-0 flex-col">
 								<h4 class="text-lg leading-normal text-voi-black">{name}</h4>
-								<p class="max-w-80 pt-2 text-[15px] leading-normal text-justify text-voi-black">
+								<p class="max-w-80 pt-2 text-base leading-normal text-justify text-voi-black">
 									{copy}
 								</p>
 							</div>
@@ -111,9 +111,9 @@ const ecosistema = [
 				}
 			</ul>
 		</section>
-		<div class="col-span-1 row-span-2 row-start-5 col-start-7 flex items-center justify-center">
-		<p
-				class="pointer-events-none z-20 hidden origin-center -rotate-90 whitespace-nowrap text-lg text-voi-black lg:block"
+		<div class="col-span-1 row-span-2 row-start-5 col-start-7 hidden items-center justify-center lg:flex">
+			<p
+				class="pointer-events-none z-20 origin-center -rotate-90 whitespace-nowrap text-lg text-voi-black"
 			>
 				BUENOS AIRES, AR
 			</p>
@@ -121,7 +121,7 @@ const ecosistema = [
 
 		{/* Ecosistema — below manifesto on both breakpoints */}
 		<section
-			class="col-span-full row-start-12 row-span-5 z-10 px-2 pb-20 lg:col-span-6 lg:col-start-2 lg:row-start-8 lg:row-span-5 lg:px-0"
+			class="col-span-full row-[12/span_6] z-10 px-5 pb-20 lg:col-span-6 lg:col-start-2 lg:row-[8/span_5] lg:px-0"
 		>
 			<h2 class="mb-6 text-4xl leading-none uppercase">Ecosistema de trabajo</h2>
 
