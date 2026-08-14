@@ -51,3 +51,9 @@
 	--nav-fg: var(--color-voi-white);
 	color: var(--color-voi-white);
 }
+
+@media (prefers-reduced-motion: no-preference) {
+	[data-fade-up] {
+		opacity: 0;
+	}
+}

@@ -43,37 +43,37 @@ const ecosistema = [
 			class="col-span-full row-[3/span_5] z-10 px-5 lg:col-span-2 lg:col-start-2 lg:row-[3/span_5] lg:px-0"
 		>
 			<div class="text-base leading-6 space-y-6">
-				<p>
+				<p data-fade-up>
 					Nuestra identidad nace del reconocimiento del &ldquo;otro&rdquo;. Es una palabra que nos
 					recuerda que las mejores soluciones no vienen de una sola dirección.
 				</p>
-				<p>
+				<p data-fade-up>
 					Buscamos expandir la arquitectura enfocándonos en el cliente, entendiendo su necesidad
 					como punto de partida para desarrollar un proyecto único.
 				</p>
-				<p>Nos adaptamos a la visión del otro aportando una mirada multidisciplinar.</p>
+				<p data-fade-up>Nos adaptamos a la visión del otro aportando una mirada multidisciplinar.</p>
 			</div>
 
-			<h2 class="mt-8 text-2xl font-black leading-6 text-voi-orange uppercase">
+			<h2 data-fade-up class="mt-8 text-2xl font-black leading-6 text-voi-orange uppercase">
 				Precisión y materialidad
 			</h2>
 
 			<div class="mt-6 text-base leading-6 space-y-6">
-				<p>
+				<p data-fade-up>
 					Reflejamos la función a través de la precisión física. No hay decisiones arbitrarias en
 					nuestro proceso.
 				</p>
-				<p>
+				<p data-fade-up>
 					El color, la forma, la textura y el material son la manifestación directa del sistema que
 					estamos creando.
 				</p>
-				<p>La estética es la consecuencia de un sistema bien diseñado.</p>
+				<p data-fade-up>La estética es la consecuencia de un sistema bien diseñado.</p>
 			</div>
 
 			<ul class="mt-10 text-base leading-8 uppercase list-none p-0 m-0">
 				{
 					checklist.map((item) => (
-						<li>
+						<li data-fade-up>
 							<span aria-hidden="true">[ + ] </span>
 							{item}
 						</li>
@@ -87,6 +87,7 @@ const ecosistema = [
 			class="col-span-full row-[8/span_4] relative z-10 px-5 pt-8 lg:row-[1/span_5] lg:col-span-2 lg:col-start-5 lg:px-0"
 		>
 			<div
+				data-parallax="0.5"
 				class="pointer-events-none absolute -right-8 top-0 hidden h-full w-[28rem] text-voi-grey lg:block"
 				aria-hidden="true"
 			>
@@ -98,7 +99,7 @@ const ecosistema = [
 			<ul class="relative z-10 m-0 flex list-none flex-col gap-10 p-0 lg:gap-12 lg:pt-8">
 				{
 					partners.map(({ name, copy }) => (
-						<li class="flex shrink-0 items-start gap-4 sm:gap-6">
+						<li data-fade-up class="flex shrink-0 items-start gap-4 sm:gap-6">
 							<div class="size-24 shrink-0 bg-voi-black sm:size-32 lg:size-40" aria-hidden="true" />
 							<div class="flex min-w-0 flex-col">
 								<h4 class="text-lg leading-normal text-voi-black">{name}</h4>
@@ -123,12 +124,12 @@ const ecosistema = [
 		<section
 			class="col-span-full row-[12/span_6] z-10 px-5 pb-20 lg:col-span-6 lg:col-start-2 lg:row-[8/span_5] lg:px-0"
 		>
-			<h2 class="mb-6 text-4xl leading-none uppercase">Ecosistema de trabajo</h2>
+			<h2 data-fade-up class="mb-6 text-4xl leading-none uppercase">Ecosistema de trabajo</h2>
 
 			<div class="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-4">
 				{
 					ecosistema.map(({ title, body }) => (
-						<article>
+						<article data-fade-up>
 							<div class="aspect-[496/336] w-full bg-voi-orange" aria-hidden="true" />
 							<h3 class="mt-4 text-3xl leading-none uppercase">{title}</h3>
 							<p class="mt-4 max-w-[29rem] text-sm leading-normal text-voi-black">{body}</p>

@@ -633,6 +633,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		hiddenSnapTarget,
 		resolveSlideSlot,
 	} from '../lib/carousel-slots';
+	import { killDetailFadeUp, refreshFadeUp, resetDetailFadeUp } from '../lib/fade-up';
 
 	gsap.registerPlugin(Flip);
 
@@ -1000,6 +1001,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		function openDetail() {
 			killExpandAnimations();
 			settleCollapsedUi();
+			resetDetailFadeUp();
 
 			const slideState = Flip.getState(slides, { props: 'opacity' });
 			const metaState = metaBar ? Flip.getState(metaBar) : null;
@@ -1018,6 +1020,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 					clearDetailAlpha();
 					clearFlipTransforms();
 					expandTimeline = null;
+					refreshFadeUp();
 				},
 			});
 
@@ -1063,6 +1066,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		 */
 		function closeDetail() {
 			killExpandAnimations();
+			killDetailFadeUp();
 
 			const detail = activeDetailEl();
 
@@ -1223,7 +1227,12 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 			applyExpandedChrome(expanded);
 			if (panel) panel.hidden = !expanded;
 			syncRowSpans();
-			if (expanded) clearDetailAlpha();
+			if (expanded) {
+				clearDetailAlpha();
+				refreshFadeUp();
+			} else {
+				resetDetailFadeUp();
+			}
 
 			if (state) {
 				Flip.from(state, {
