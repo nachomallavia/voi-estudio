@@ -21,7 +21,7 @@ function prefersReducedMotion() {
 
 function pageFadeEls() {
 	return [...document.querySelectorAll<HTMLElement>('[data-fade-up]')].filter(
-		(el) => !el.closest('.project-detail'),
+		(el) => !el.closest('.project-detail') && !el.matches('.project-carousel'),
 	);
 }
 
@@ -119,7 +119,8 @@ function initFadeUp() {
 	const pages = pageFadeEls();
 	const hasDetails = document.querySelector(DETAIL_SELECTOR);
 	const hasParallax = document.querySelector('[data-parallax]');
-	if (!pages.length && !hasDetails && !hasParallax) return;
+	const hasCarousel = document.querySelector('.project-carousel[data-fade-up]');
+	if (!pages.length && !hasDetails && !hasParallax && !hasCarousel) return;
 
 	mm = gsap.matchMedia();
 	mm.add(
@@ -135,6 +136,11 @@ function initFadeUp() {
 				gsap.set('[data-fade-up]', { autoAlpha: 1, y: 0 });
 				gsap.set('[data-parallax]', { y: 0 });
 				return;
+			}
+
+			const carousel = document.querySelector<HTMLElement>('.project-carousel[data-fade-up]');
+			if (carousel) {
+				fadeTo(carousel, { clearProps: 'transform' });
 			}
 
 			const items = pageFadeEls();
