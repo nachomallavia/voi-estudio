@@ -731,7 +731,9 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		}
 		const height = maxBottom - top;
 		if (height <= 0) return 0;
-		return Math.max(1, Math.ceil((height + gap) / track));
+		// round, not ceil: getBoundingClientRect is often a fraction over an
+		// exact N tracks, and ceil turned that into a phantom empty row.
+		return Math.max(1, Math.round((height + gap) / track));
 	}
 
 	function initCarousel(root: HTMLElement) {
