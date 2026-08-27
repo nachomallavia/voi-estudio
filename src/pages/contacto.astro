@@ -7,20 +7,11 @@ import VoiOutlineAlt from '../assets/voi-outline-alt.svg';
 ---
 
 <Layout bgColor="bg-voi-green">
-	<!-- <div
-		class="pointer-events-none absolute inset-0 z-0 overflow-hidden"
-		aria-hidden="true"
-	>
-		<BentStripFilled
-			class="absolute -left-4 top-[61vh] h-auto w-[586px] max-w-none text-voi-orange"
-		/>
-	</div> -->
-
 	<div
-		class="col-span-full row-[1/span_8] z-10 relative grid grid-cols-subgrid grid-rows-subgrid font-libertad-mono text-voi-black lg:row-[1/span_6]"
+		class="col-span-full row-[1/span_7] z-10 relative grid grid-cols-subgrid grid-rows-subgrid font-libertad-mono text-voi-black lg:row-[1/span_4]"
 	>
 		<aside
-			class="col-span-full row-start-3 row-span-1 z-10 flex flex-col gap-4 lg:col-span-1 lg:col-start-2 "
+			class="col-span-full row-start-3 row-span-1 z-10 flex flex-col gap-4 lg:col-span-1 lg:col-start-2"
 		>
 			<a
 				data-fade-up
@@ -47,14 +38,15 @@ import VoiOutlineAlt from '../assets/voi-outline-alt.svg';
 		</aside>
 
 		<section
-			data-fade-up class="col-span-full row-start-4 row-span-5 z-10 px-5 pt-5 pb-20 lg:col-span-2 lg:col-start-4 lg:row-start-2 lg:row-span-4  bg-voi-white"
+			data-fade-up
+			class="col-span-full row-start-4 row-span-4 z-10 px-5 pt-5 pb-8 lg:col-span-2 lg:col-start-4 lg:row-start-2 lg:row-span-3 lg:pb-6 bg-voi-white"
 		>
 			<h1 data-fade-up class="text-3xl leading-none uppercase">Contacto</h1>
-			<p data-fade-up class="mt-5 max-w-[30rem] text-base leading-normal">
+			<p data-fade-up class="mt-4 max-w-[30rem] text-base leading-normal">
 				Dejanos tu nombre, un mail y tu mensaje para que nos comuniquemos con vos.
 			</p>
 
-			<form id="contacto-form" class="mt-10 flex w-full max-w-30rem flex-col gap-5" novalidate>
+			<form id="contacto-form" class="mt-6 flex w-full max-w-30rem flex-col gap-3" novalidate>
 				<label data-fade-up class="flex flex-col gap-2 text-lg leading-normal">
 					Nombre
 					<input
@@ -63,7 +55,7 @@ import VoiOutlineAlt from '../assets/voi-outline-alt.svg';
 						autocomplete="name"
 						required
 						maxlength="120"
-						class="h-[59px] w-full appearance-none border border-voi-black bg-transparent px-3 text-lg text-voi-black outline-none transition-colors focus:border-voi-orange"
+						class="h-12 w-full appearance-none border border-voi-black bg-transparent px-3 text-lg text-voi-black outline-none transition-colors focus:border-voi-orange"
 					/>
 				</label>
 				<label data-fade-up class="flex flex-col gap-2 text-lg leading-normal">
@@ -74,7 +66,7 @@ import VoiOutlineAlt from '../assets/voi-outline-alt.svg';
 						autocomplete="email"
 						required
 						maxlength="254"
-						class="h-[59px] w-full appearance-none border border-voi-black bg-transparent px-3 text-lg text-voi-black outline-none transition-colors focus:border-voi-orange"
+						class="h-12 w-full appearance-none border border-voi-black bg-transparent px-3 text-lg text-voi-black outline-none transition-colors focus:border-voi-orange"
 					/>
 				</label>
 				<label data-fade-up class="flex flex-col gap-2 text-lg leading-normal">
@@ -83,7 +75,7 @@ import VoiOutlineAlt from '../assets/voi-outline-alt.svg';
 						name="mensaje"
 						required
 						maxlength="5000"
-						class="h-[140px] w-full resize-none appearance-none border border-voi-black bg-transparent px-3 py-3 text-lg text-voi-black outline-none transition-colors focus:border-voi-orange"
+						class="h-20 w-full resize-none appearance-none border border-voi-black bg-transparent px-3 py-3 text-lg text-voi-black outline-none transition-colors focus:border-voi-orange"
 					></textarea>
 				</label>
 				<div data-fade-up class="flex items-center justify-between gap-4">
@@ -98,7 +90,7 @@ import VoiOutlineAlt from '../assets/voi-outline-alt.svg';
 			</form>
 		</section>
 
-		<div class="col-span-1 col-start-7 row-start-2 row-span-4 hidden items-center justify-center lg:flex">
+		<div class="col-span-1 col-start-7 row-start-2 row-span-3 hidden items-center justify-center lg:flex">
 			<p
 				class="pointer-events-none z-20 origin-center -rotate-90 whitespace-nowrap text-lg text-voi-black"
 			>
@@ -106,14 +98,14 @@ import VoiOutlineAlt from '../assets/voi-outline-alt.svg';
 			</p>
 		</div>
 		<div
-				data-parallax="0.5"
-				class="pointer-events-none relative hidden w-[28rem] lg:block"
-				aria-hidden="true"
-			>
-				<VoiOutlineAlt
-					class="absolute left-4 top-8 h-[50rem] w-auto max-w-none stroke-1 text-voi-orange/0 opacity-100 fill-voi-orange"
-				/>
-			</div>
+			data-parallax="0.5"
+			class="pointer-events-none relative hidden lg:block col-span-full row-span-full overflow-hidden"
+			aria-hidden="true"
+		>
+			<VoiOutlineAlt
+				class="absolute left-4 top-8 h-[50rem] w-auto max-w-none stroke-1 text-voi-orange/0 opacity-100 fill-voi-orange"
+			/>
+		</div>
 	</div>
 </Layout>
 

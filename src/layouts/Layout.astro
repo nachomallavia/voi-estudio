@@ -3,17 +3,19 @@ import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 import Logo from '../assets/logo.svg';
 import Footer from '../components/Footer.astro';
+import NavO from '../components/NavO.astro';
+import type { NavOChars } from '../lib/nav-o';
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 const links = [
-	{ href: '/', label: 'Proyectos' },
-	{ href: '/nosotros', label: 'Nosotros' },
-	{ href: '/contacto', label: 'Contacto' },
+	{ href: '/', label: 'Proyectos', oChars: [4, 1] satisfies NavOChars[] },
+	{ href: '/nosotros', label: 'Nosotros', oChars: [4, 1, 3] satisfies NavOChars[] },
+	{ href: '/contacto', label: 'Contacto', oChars: [2, 4] satisfies NavOChars[] },
 ] as const;
 const bgColor = Astro.props.bgColor as string | undefined;
 
 const linkClass =
-	'block w-full text-right pr-2 text-current text-base font-libertad-mono border border-transparent hover:border-current transition-[border-color] duration-200 ease-in-out';
+	'nav-link inline-flex w-full items-baseline justify-end overflow-visible whitespace-nowrap pr-2 text-current text-base font-libertad-mono border border-transparent hover:border-current transition-[border-color] duration-200 ease-in-out';
 ---
 <!doctype html>
 <html lang="es">
@@ -37,7 +39,7 @@ const linkClass =
 		<main class:list={['relative h-screen overflow-y-auto ', bgColor]}>
 			<div class="grid grid-cols-2 gap-4 auto-rows-44 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7">
 				<div
-					class="col-span-1 -translate-y-1/4 md:-translate-y-0 row-span-2 row-start-1 col-start-1 lg:col-start-2 z-20 grid grid-cols-subgrid grid-rows-subgrid"
+					class="col-span-1 -translate-y-[5.5rem] row-span-2 row-start-1 col-start-1 lg:col-start-2 z-20 grid grid-cols-subgrid grid-rows-subgrid"
 					data-site-brand
 					data-nav-theme="dark"
 				>
@@ -45,21 +47,26 @@ const linkClass =
 						<Logo class="w-1/2 text-2xl font-libertad-mono" />
 					</div>
 					<div class="col-span-1 row-span-1">
-						<nav>
+						<nav data-site-nav transition:persist="site-nav">
 							<ul class="flex flex-col items-end justify-start">
-								{links.map(({ href, label }) => {
+								{links.map(({ href, label, oChars }) => {
 									const isActive = pathname === href;
+									let oIndex = 0;
 									return (
 										<li class="block w-full text-right">
 											<a
 												href={href}
-												class:list={[
-													linkClass,
-													isActive && 'bg-voi-orange !text-voi-black',
-												]}
+												data-nav-link
+												data-stretched={isActive ? 'true' : 'false'}
+												class:list={[linkClass, isActive && 'is-active']}
 												aria-current={isActive ? 'page' : undefined}
 											>
-												{label}
+												{[...label].map((ch) => {
+													if (ch.toLowerCase() !== 'o') return ch;
+													const chars = oChars[oIndex] ?? 3;
+													oIndex += 1;
+													return <NavO stretched={isActive} chars={chars} />;
+												})}
 											</a>
 										</li>
 									);
@@ -70,7 +77,7 @@ const linkClass =
 				</div>
 				<slot />
 			</div>
-			<Footer pathname={pathname} links={links} />
+			<Footer />
 		</main>
 	</body>
 </html>
@@ -83,11 +90,66 @@ const linkClass =
 		min-height: 100%;
 		font-family: 'LibertadMono', sans-serif;
 	}
+
+	.nav-link.is-active {
+		background-color: var(--color-voi-orange);
+		color: var(--color-voi-black);
+	}
+
+	.nav-o {
+		display: inline-block;
+		flex-shrink: 0;
+		overflow: visible;
+		vertical-align: baseline;
+	}
 </style>
 
 <script>
 	import { startFadeUp } from '../lib/fade-up';
 	import { startScrollPersist } from '../lib/scroll-persist';
+	import { syncNavOs } from '../lib/nav-morph';
 	startScrollPersist();
 	startFadeUp();
+
+	function currentPath() {
+		return window.location.pathname.replace(/\/$/, '') || '/';
+	}
+
+	function syncNavActive(nav: HTMLElement, href = currentPath(), animate = false) {
+		const path = href.replace(/\/$/, '') || '/';
+		for (const link of nav.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')) {
+			const isActive = (link.getAttribute('href') || '/') === path;
+			const wasStretched = link.dataset.stretched === 'true';
+			link.classList.toggle('is-active', isActive);
+			if (isActive) link.setAttribute('aria-current', 'page');
+			else link.removeAttribute('aria-current');
+
+			if (wasStretched === isActive) continue;
+			link.dataset.stretched = isActive ? 'true' : 'false';
+			syncNavOs(link, isActive, animate);
+		}
+	}
+
+	function bindSiteNav() {
+		const nav = document.querySelector<HTMLElement>('[data-site-nav]');
+		if (!nav) return;
+
+		const alreadyBound = nav.dataset.navBound === 'true';
+		syncNavActive(nav, currentPath(), alreadyBound);
+
+		if (alreadyBound) return;
+		nav.dataset.navBound = 'true';
+
+		nav.addEventListener('click', (event) => {
+			if (event.defaultPrevented || event.button !== 0) return;
+			if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+			const link = (event.target as Element | null)?.closest?.('a[data-nav-link]');
+			if (!(link instanceof HTMLAnchorElement)) return;
+			if (link.origin !== window.location.origin) return;
+			syncNavActive(nav, link.getAttribute('href') || '/', true);
+		});
+	}
+
+	bindSiteNav();
+	document.addEventListener('astro:page-load', bindSiteNav);
 </script>

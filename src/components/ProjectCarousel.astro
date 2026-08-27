@@ -21,7 +21,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 	data-project-carousel
 	data-fade-up
 	data-count={projects.length}
-	data-collapsed-rows="6"
+	data-collapsed-rows="5"
 	data-stage-rows="5"
 	data-initial-active={initialActive}
 	data-initial-expanded={initialExpanded ? 'true' : 'false'}
@@ -31,12 +31,12 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 	aria-label="Proyectos"
 >
 	<div
-		class="carousel-controls row-start-1 col-span-1 z-20 flex items-end justify-end gap-4"
+		class="carousel-controls row-start-1 col-span-1 z-20 flex items-end justify-end gap-4 md:-translate-y-8"
 		data-carousel-controls
 	>
 <button
 	type="button"
-	class="carousel-btn"
+	class="carousel-btn bg-voi-grey"
 	data-carousel-prev
 	aria-label="Proyecto anterior"
 >
@@ -46,7 +46,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 </button>
 <button
 	type="button"
-	class="carousel-btn"
+	class="carousel-btn bg-voi-grey"
 	data-carousel-next
 	aria-label="Proyecto siguiente"
 >
@@ -56,7 +56,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 </button>
 </div>
 	<div
-		class="carousel-stage relative col-span-full row-span-3  w-full min-w-0 grid grid-cols-subgrid grid-rows-subgrid"
+		class="carousel-stage relative col-span-full row-start-1 row-span-4 pb-16 w-full min-w-0 grid grid-cols-subgrid grid-rows-subgrid"
 	>
 		
 		<div class="carousel-track contents" data-carousel-track>
@@ -107,7 +107,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 	</div>
 
 	<div
-		class="carousel-meta row-span-1 row-start-5 z-30 flex min-w-0 items-start justify-between gap-5 pt-5"
+		class="carousel-meta row-span-1 row-start-5  z-30 flex min-w-0 items-start justify-between gap-5 pt-5 -translate-y-8"
 	>
 		<div
 			class="min-w-0 font-libertad-mono text-base leading-tight text-voi-black md:text-sm"
@@ -122,7 +122,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 						hidden={index !== initialActive}
 					>
 						<p>
-							{project.data.code} // {project.data.category}
+							{project.data.code} // {project.data.category} // {project.data.mts} m<sup>2</sup>
 						</p>
 						<p>{project.data.locality}</p>
 						<p>{project.data.region}</p>
@@ -144,14 +144,14 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 
 	<div
 		id="project-detail-panel"
-		class="project-detail-panel col-span-full grid grid-cols-subgrid grid-rows-subgrid z-30"
+		class="project-detail-panel col-span-full grid grid-cols-subgrid grid-rows-subgrid z-30 -mt-16"
 		data-detail-panel
 		hidden={!initialExpanded}
 	>
 		{
 			projects.map((project, index) => (
 				<div
-					class="col-span-full grid grid-cols-subgrid grid-rows-subgrid bg-voi-white lg:col-span-5 lg:col-start-2"
+					class="col-span-full grid grid-cols-subgrid grid-rows-subgrid bg-voi-white lg:col-span-5 lg:col-start-2 "
 					data-detail
 					data-index={index}
 					data-id={project.id}
@@ -170,6 +170,13 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		if (!root) return;
 
 		const params = new URLSearchParams(location.search);
+		const stageEl = root.querySelector('.carousel-stage');
+		if (stageEl instanceof HTMLElement) {
+			const sideOpacity = params.get('sideOpacity');
+			const sideGray = params.get('sideGray');
+			if (sideOpacity) stageEl.style.setProperty('--slide-side-opacity', sideOpacity);
+			if (sideGray) stageEl.style.setProperty('--slide-side-gray', sideGray);
+		}
 		const hasUrlState = params.has('proyecto') || params.has('detalle');
 		let stored = null;
 		try {
@@ -218,21 +225,32 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 </script>
 
 <style>
-	/* Align to hero's right column; Flip animates the shift on expand/collapse */
+	/* Collapsed: one column to the right of the hero. Expanded: right edge of the wide hero. */
 	.carousel-controls {
 		grid-column-start: 2;
 	}
 
+	@media (min-width: 640px) {
+		.carousel-controls {
+			grid-column-start: 3;
+			justify-content: flex-start;
+		}
+	}
+
 	@media (min-width: 768px) {
 		.carousel-controls {
-			grid-column-start: 4;
+			grid-column-start: 5;
 		}
 	}
 
 	@media (min-width: 1024px) {
 		.carousel-controls {
-			grid-column-start: 5;
+			grid-column-start: 6;
 		}
+	}
+
+	.project-carousel[data-expanded='true'] .carousel-controls {
+		justify-content: flex-end;
 	}
 
 	@media (min-width: 640px) {
@@ -260,7 +278,10 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		--slide-gap: 1rem;
 		--slide-h-far: var(--slide-row);
 		--slide-h-mid: calc(var(--slide-row) * 2 + var(--slide-gap));
-		--slide-h-hero: calc(var(--slide-row) * 3 + var(--slide-gap) * 2);
+		--slide-h-hero: calc(var(--slide-row) * 4 + var(--slide-gap) * 3);
+		/* Override without rebuild: ?sideOpacity=0.4&sideGray=0.1 */
+		--slide-side-opacity: 0.4;
+		--slide-side-gray: 0.1;
 		touch-action: pan-y;
 		cursor: grab;
 		user-select: none;
@@ -410,6 +431,22 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		max-height: 100%;
 		object-fit: cover;
 		object-position: center;
+		opacity: var(--slide-side-opacity);
+		filter: grayscale(var(--slide-side-gray));
+		transition:
+			opacity 0.35s ease,
+			filter 0.35s ease;
+	}
+
+	.carousel-slide[data-slot='hero'] .carousel-slide__img {
+		opacity: 1;
+		filter: grayscale(0);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.carousel-slide__img {
+			transition: none;
+		}
 	}
 
 	.project-carousel[data-expanded='true'] .carousel-slide[data-slot='hero'] {
@@ -642,7 +679,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		return ((index % count) + count) % count;
 	}
 
-	const COLLAPSED_ROWS = 6;
+	const COLLAPSED_ROWS = 5;
 	const STAGE_AND_META_ROWS = 5;
 	const PHASE_DURATION = 0.32;
 	const FADE_DURATION = 0.16;
@@ -714,6 +751,13 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		const details = [...root.querySelectorAll<HTMLElement>('[data-detail]')];
 		const pagerItems = [...root.querySelectorAll<HTMLButtonElement>('[data-pager-item]')];
 		const stage = root.querySelector<HTMLElement>('.carousel-stage');
+		if (stage) {
+			const lookParams = new URLSearchParams(window.location.search);
+			const sideOpacity = lookParams.get('sideOpacity');
+			const sideGray = lookParams.get('sideGray');
+			if (sideOpacity) stage.style.setProperty('--slide-side-opacity', sideOpacity);
+			if (sideGray) stage.style.setProperty('--slide-side-gray', sideGray);
+		}
 		const metaBar = root.querySelector<HTMLElement>('.carousel-meta');
 		const controls = root.querySelector<HTMLElement>('[data-carousel-controls]');
 		const panel = root.querySelector<HTMLElement>('[data-detail-panel]');
@@ -878,17 +922,23 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 			});
 		}
 
+		/** Visual left of the arrow pair (not the column box — justify-content can shift them). */
+		function controlsVisualLeft() {
+			const btn = controls?.querySelector<HTMLElement>('[data-carousel-prev]');
+			return btn?.getBoundingClientRect().left ?? controls?.getBoundingClientRect().left ?? 0;
+		}
+
 		/**
 		 * Move controls with x only — stays in grid flow.
 		 * Flip.absolute would pull them out of the row and collapse layout.
-		 * Call AFTER the grid-column mutation; pass left from before the change.
+		 * Call AFTER the grid-column / justify mutation; pass visual left from before.
 		 */
 		function controlsMoveTween(
 			fromLeft: number,
 			vars?: { duration?: number; ease?: string },
 		) {
 			if (!controls) return null;
-			const dx = fromLeft - controls.getBoundingClientRect().left;
+			const dx = fromLeft - controlsVisualLeft();
 			if (Math.abs(dx) < 0.5) return null;
 			gsap.set(controls, { x: dx });
 			return gsap.to(controls, {
@@ -1006,7 +1056,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 
 			const slideState = Flip.getState(slides, { props: 'opacity' });
 			const metaState = metaBar ? Flip.getState(metaBar) : null;
-			const controlsLeft = controls?.getBoundingClientRect().left ?? 0;
+			const controlsLeft = controlsVisualLeft();
 
 			applyExpandedChrome(true);
 			if (panel) panel.hidden = true;
@@ -1129,7 +1179,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 			// Synchronous Flip window — capture, mutate, Flip.from
 			const slideState = Flip.getState(slides, { props: 'opacity' });
 			const metaState = metaBar ? Flip.getState(metaBar) : null;
-			const controlsLeft = controls?.getBoundingClientRect().left ?? 0;
+			const controlsLeft = controlsVisualLeft();
 
 			if (panel) panel.hidden = true;
 			clearPanelClip();

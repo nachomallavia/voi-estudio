@@ -1,0 +1,44 @@
+---
+import {
+	NAV_O_COMPACT,
+	NAV_O_COMPACT_ADVANCE,
+	NAV_O_EM,
+	NAV_O_HEIGHT,
+	navOAdvance,
+	navOEm,
+	navOPath,
+	type NavOChars,
+} from '../lib/nav-o';
+
+interface Props {
+	stretched?: boolean;
+	/** How many monospace character cells the stretched O occupies. */
+	chars?: NavOChars;
+}
+
+const { stretched = false, chars = 3 } = Astro.props;
+const stretchedAdvance = navOAdvance(chars);
+const stretchedPath = navOPath(chars);
+const advance = stretched ? stretchedAdvance : NAV_O_COMPACT_ADVANCE;
+const d = stretched ? stretchedPath : NAV_O_COMPACT;
+---
+
+<svg
+	class="nav-o"
+	viewBox={`0 0 ${advance} ${NAV_O_HEIGHT}`}
+	width={navOEm(advance)}
+	height={`${NAV_O_HEIGHT / NAV_O_EM}em`}
+	aria-hidden="true"
+	focusable="false"
+>
+	<path
+		data-nav-o-path
+		data-compact={NAV_O_COMPACT}
+		data-stretched={stretchedPath}
+		data-advance-compact={String(NAV_O_COMPACT_ADVANCE)}
+		data-advance-stretched={String(stretchedAdvance)}
+		d={d}
+		fill="currentColor"
+		fill-rule="evenodd"
+	/>
+</svg>

@@ -14,6 +14,8 @@ const proyectos = defineCollection({
 		locality: z.string(),
 		region: z.string(),
 		order: z.number(),
+		/** Superficie en m² */
+		mts: z.number(),
 		/** Path relative to the entry folder, e.g. `./cover.jpg` */
 		cover: z.string(),
 		coverAlt: z.string(),
