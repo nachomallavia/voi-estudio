@@ -31,7 +31,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 	aria-label="Proyectos"
 >
 	<div
-		class="carousel-controls row-start-1 col-span-1 z-20 flex items-end justify-end gap-4 md:-translate-y-8"
+		class="carousel-controls row-start-1 col-span-1 z-20 flex items-end justify-end gap-4"
 		data-carousel-controls
 	>
 <button
@@ -107,7 +107,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 	</div>
 
 	<div
-		class="carousel-meta row-span-1 row-start-5  z-30 flex min-w-0 items-start justify-between gap-5 pt-5 -translate-y-8"
+		class="carousel-meta row-span-1 row-start-5 z-30 flex min-w-0 items-start justify-between gap-5 pt-5"
 	>
 		<div
 			class="min-w-0 font-libertad-mono text-base leading-tight text-voi-black md:text-sm"
@@ -240,6 +240,8 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 	@media (min-width: 768px) {
 		.carousel-controls {
 			grid-column-start: 5;
+			position: relative;
+			top: -2rem;
 		}
 	}
 
@@ -302,9 +304,12 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 
 	.carousel-meta {
 		/* Close the grid gaps (gap-4 = 1rem) so the box sits flush to the cover
-		   and the detail; the same 1rem returns as padding so copy stays on-grid. */
+		   and the detail; the same 1rem returns as padding so copy stays on-grid.
+		   The extra -2rem is the old -translate-y-8, kept as margin so GSAP
+		   can interpolate it — a CSS translate is cleared for the whole Flip. */
 		--meta-gap: 1rem;
-		margin-block: calc(-1 * var(--meta-gap));
+		margin-top: calc(-1 * var(--meta-gap) - 2rem);
+		margin-bottom: calc(-1 * var(--meta-gap));
 		padding-block: var(--meta-gap);
 		padding-inline: var(--meta-gap);
 		background-color: transparent;
@@ -338,6 +343,9 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 	.project-carousel[data-expanded='true'] .carousel-meta {
 		padding-inline: var(--meta-gap);
 		grid-column: 1 / span 2;
+		/* Stage keeps pb-16 under the cover. Another -2rem (4rem total with
+		   the resting offset) sits the white fill on the hero. */
+		margin-top: calc(-1 * var(--meta-gap) - 4rem);
 	}
 
 	@media (min-width: 640px) {
@@ -434,8 +442,8 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		opacity: var(--slide-side-opacity);
 		filter: grayscale(var(--slide-side-gray));
 		transition:
-			opacity 0.35s ease,
-			filter 0.35s ease;
+			opacity var(--slide-fade-duration, 0.35s) var(--slide-fade-ease, ease),
+			filter var(--slide-fade-duration, 0.35s) var(--slide-fade-ease, ease);
 	}
 
 	.carousel-slide[data-slot='hero'] .carousel-slide__img {
@@ -681,15 +689,14 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 
 	const COLLAPSED_ROWS = 5;
 	const STAGE_AND_META_ROWS = 5;
-	const PHASE_DURATION = 0.32;
-	const FADE_DURATION = 0.16;
+	/** Image and white box move together. The detail div waits until that finishes. */
+	const UNISON_DURATION = 0.65;
+	const UNISON_EASE = 'power3.out';
+	const REVEAL_DURATION = 0.45;
+	const UNISON_EASE_CSS = 'cubic-bezier(0.215, 0.61, 0.355, 1)';
 	const NAV_DURATION = 0.4;
 	const DRAG_SETTLE = 0.25;
 	const EXPAND_EASE = 'power3.out';
-	/** Close: softer inOut + slightly longer narrow reads as one continuous motion. */
-	const CLOSE_EASE = 'power2.inOut';
-	const DISMISS_DURATION = 0.22;
-	const NARROW_DURATION = 0.42;
 	const PANEL_CLIP_CLOSED = 'inset(0 0 100% 0)';
 	const PANEL_CLIP_OPEN = 'inset(0 0 0 0)';
 	const DRAG_THRESHOLD_PX = 64;
@@ -769,6 +776,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		const next = root.querySelector<HTMLButtonElement>('[data-carousel-next]');
 		const main = document.querySelector('main');
 		const brand = document.querySelector<HTMLElement>('[data-site-brand]');
+		const pageGrid = root.parentElement instanceof HTMLElement ? root.parentElement : null;
 
 		const STORAGE_KEY = 'voi-carousel';
 
@@ -826,6 +834,18 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 
 		function setPanelClip(value: string) {
 			if (panel) panel.style.clipPath = value;
+		}
+
+		/** GSAP's clip-path parser skips this inset, so drive it from a number. */
+		function tweenPanelReveal(tl: gsap.core.Timeline, from: number, to: number) {
+			if (!panel) return;
+			const state = { reveal: from };
+			const apply = () => {
+				const hidden = (1 - state.reveal) * panel.offsetHeight;
+				panel.style.clipPath = `inset(0px 0px ${hidden}px 0px)`;
+			};
+			apply();
+			tl.to(state, { reveal: to, onUpdate: apply }, 0);
 		}
 
 		function clearPanelClip() {
@@ -897,7 +917,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		) {
 			if (!state) return null;
 			return Flip.from(state, {
-				duration: vars?.duration ?? PHASE_DURATION,
+				duration: vars?.duration ?? UNISON_DURATION,
 				ease: vars?.ease ?? EXPAND_EASE,
 				absolute: true,
 				nested: true,
@@ -914,7 +934,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 		) {
 			if (!state || !metaBar) return null;
 			return Flip.from(state, {
-				duration: vars?.duration ?? PHASE_DURATION,
+				duration: vars?.duration ?? UNISON_DURATION,
 				ease: vars?.ease ?? EXPAND_EASE,
 				// Keep the bar in grid flow — absolute Flip was leaving it offset
 				// or covered after expand/collapse, especially on narrow viewports.
@@ -945,7 +965,7 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 			gsap.set(controls, { x: dx });
 			return gsap.to(controls, {
 				x: 0,
-				duration: vars?.duration ?? PHASE_DURATION,
+				duration: vars?.duration ?? UNISON_DURATION,
 				ease: vars?.ease ?? EXPAND_EASE,
 				clearProps: 'transform',
 			});
@@ -972,6 +992,63 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 
 		function clearMetaFillProps() {
 			if (metaBar) gsap.set(metaBar, { clearProps: 'backgroundColor' });
+		}
+
+		/** Negative margin so the extra detail rows don't shove the footer before the tween. */
+		function holdPage(offset: number) {
+			if (!pageGrid) return;
+			pageGrid.style.marginBottom = offset === 0 ? '' : `${offset}px`;
+		}
+
+		function clearLayoutHold() {
+			if (pageGrid) pageGrid.style.marginBottom = '';
+		}
+
+		function setSlideFade(unison: boolean) {
+			if (unison) {
+				root.style.setProperty('--slide-fade-duration', `${UNISON_DURATION}s`);
+				root.style.setProperty('--slide-fade-ease', UNISON_EASE_CSS);
+			} else {
+				root.style.removeProperty('--slide-fade-duration');
+				root.style.removeProperty('--slide-fade-ease');
+			}
+		}
+
+		function captureGridRows() {
+			return {
+				root: root.style.gridRow,
+				panel: panel?.style.gridRow ?? '',
+				panelHidden: Boolean(panel?.hidden),
+				details: details.map((item) => {
+					const article = item.querySelector<HTMLElement>('[data-row-span]');
+					return { row: item.style.gridRow, article: article?.style.gridRow ?? '' };
+				}),
+			};
+		}
+
+		function restoreGridRows(saved: ReturnType<typeof captureGridRows>) {
+			root.style.gridRow = saved.root;
+			if (panel) {
+				panel.hidden = saved.panelHidden;
+				panel.style.gridRow = saved.panel;
+			}
+			details.forEach((item, index) => {
+				item.style.gridRow = saved.details[index]?.row ?? '';
+				const article = item.querySelector<HTMLElement>('[data-row-span]');
+				if (article) article.style.gridRow = saved.details[index]?.article ?? '';
+			});
+		}
+
+		/** How much the page grid shrinks once the detail rows are removed. */
+		function measureCollapseDelta() {
+			if (!pageGrid) return 0;
+			const before = pageGrid.offsetHeight;
+			const saved = captureGridRows();
+			if (panel) panel.hidden = true;
+			syncRowSpans({ panelRows: 0, layout: 'collapsed' });
+			const after = pageGrid.offsetHeight;
+			restoreGridRows(saved);
+			return Math.max(0, before - after);
 		}
 
 		function syncRowSpans(options?: {
@@ -1025,9 +1102,12 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 			if (controls) gsap.killTweensOf(controls);
 			if (metaBar) gsap.killTweensOf(metaBar, 'backgroundColor');
 			if (panel) gsap.killTweensOf(panel, 'clipPath');
+			if (pageGrid) gsap.killTweensOf(pageGrid, 'marginBottom');
 			for (const detail of details) gsap.killTweensOf(detail, 'opacity,visibility');
 			clearFlipTransforms();
 			clearMetaFillProps();
+			clearLayoutHold();
+			setSlideFade(false);
 		}
 
 		function settleExpandedUi() {
@@ -1046,10 +1126,38 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 			clearDetailAlpha();
 		}
 
+		/** Detail div, after the image and white box have already expanded. */
+		function playDetailReveal() {
+			const before = pageGrid?.offsetHeight ?? 0;
+			if (panel) {
+				setPanelClip(PANEL_CLIP_CLOSED);
+				panel.hidden = false;
+			}
+			syncRowSpans({ layout: 'expanded' });
+			clearDetailAlpha();
+			const delta = Math.max(0, (pageGrid?.offsetHeight ?? 0) - before);
+			holdPage(-delta);
+
+			const reveal = gsap.timeline({
+				defaults: { duration: REVEAL_DURATION, ease: EXPAND_EASE },
+				onComplete: () => {
+					clearLayoutHold();
+					clearPanelClip();
+					setSlideFade(false);
+					expandTimeline = null;
+					refreshFadeUp();
+				},
+			});
+			tweenPanelReveal(reveal, 0, 1);
+			if (pageGrid && delta > 0) {
+				reveal.fromTo(pageGrid, { marginBottom: -delta }, { marginBottom: 0 }, 0);
+			}
+			expandTimeline = reveal;
+		}
+
 		/**
-		 * OPEN — single timeline.
-		 * Contract: Flip.getState → mutate DOM → Flip.from, all synchronous
-		 * before play. Phases: widen → grow → reveal.
+		 * OPEN — image and white box first, detail div after.
+		 * Flip.getState → mutate widths → Flip.from, before the panel exists.
 		 */
 		function openDetail() {
 			killExpandAnimations();
@@ -1060,125 +1168,34 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 			const metaState = metaBar ? Flip.getState(metaBar) : null;
 			const controlsLeft = controlsVisualLeft();
 
+			setSlideFade(true);
 			applyExpandedChrome(true);
 			if (panel) panel.hidden = true;
-			// Expanded width, no panel rows yet (widen phase)
 			syncRowSpans({ panelRows: 0, layout: 'expanded' });
-			setDetailAlpha(0);
 
+			const flipVars = { duration: UNISON_DURATION, ease: UNISON_EASE };
 			const tl = gsap.timeline({
-				defaults: { duration: PHASE_DURATION, ease: EXPAND_EASE },
+				defaults: flipVars,
 				onComplete: () => {
-					clearPanelClip();
-					clearDetailAlpha();
 					clearFlipTransforms();
-					expandTimeline = null;
-					refreshFadeUp();
+					setMetaFill(true);
+					clearMetaFillProps();
+					playDetailReveal();
 				},
 			});
 
-			tl.addLabel('widen', 0);
-			const widenSlide = slideFlipTween(slideState);
-			const widenMeta = metaFlipTween(metaState);
-			const widenControls = controlsMoveTween(controlsLeft);
-			if (widenSlide) tl.add(widenSlide, 'widen');
-			if (widenMeta) tl.add(widenMeta, 'widen');
-			if (widenControls) tl.add(widenControls, 'widen');
-
-			tl.addLabel('grow', '>');
-			tl.call(
-				() => {
-					if (!panel) return;
-					panel.hidden = false;
-					syncRowSpans();
-					setPanelClip(PANEL_CLIP_CLOSED);
-					setDetailAlpha(0);
-				},
-				undefined,
-				'grow',
-			);
-			if (panel) {
-				tl.to(panel, { clipPath: PANEL_CLIP_OPEN }, 'grow');
-			}
-
-			// Start reveal before grow finishes — shorter perceived open
-			tl.addLabel('reveal', `-=${FADE_DURATION * 0.5}`);
-			const detail = activeDetailEl();
-			if (detail) {
-				tl.to(detail, { autoAlpha: 1, duration: FADE_DURATION }, 'reveal');
-			}
+			const slideTween = slideFlipTween(slideState, flipVars);
+			const metaTween = metaFlipTween(metaState, flipVars);
+			const controlsTween = controlsMoveTween(controlsLeft, flipVars);
+			if (slideTween) tl.add(slideTween, 0);
+			if (metaTween) tl.add(metaTween, 0);
+			if (controlsTween) tl.add(controlsTween, 0);
 
 			expandTimeline = tl;
 		}
 
-		/**
-		 * CLOSE — two timelines with explicit handoff.
-		 * Phase 1 (dismiss): content + clip + meta fill.
-		 * Phase 2 (narrow): capture Flip AFTER dismiss mutates, then width Flip.
-		 * Never inject Flip.from into a running timeline.
-		 */
-		function closeDetail() {
-			killExpandAnimations();
-			killDetailFadeUp();
-
-			const detail = activeDetailEl();
-
-			// Keep expanded WIDTH while dismissing fill + detail shell
-			root.dataset.expanded = 'true';
-			setMetaFill(true);
-			if (metaBar) {
-				gsap.set(metaBar, { backgroundColor: 'var(--color-voi-white)' });
-			}
-			if (panel && !panel.hidden) {
-				syncRowSpans({ retainLayout: true, layout: 'expanded' });
-			} else {
-				syncRowSpans({ panelRows: 0, retainLayout: true });
-			}
-
-			const dismissTl = gsap.timeline({
-				defaults: { duration: DISMISS_DURATION, ease: CLOSE_EASE },
-				onComplete: startNarrow,
-			});
-
-			dismissTl.addLabel('dismiss', 0);
-
-			// Content leaves first; clip + meta share the dismiss window
-			if (detail) {
-				dismissTl.to(
-					detail,
-					{ autoAlpha: 0, duration: FADE_DURATION, ease: 'power2.in' },
-					'dismiss',
-				);
-			}
-
-			if (panel && !panel.hidden) {
-				dismissTl.fromTo(
-					panel,
-					{ clipPath: PANEL_CLIP_OPEN },
-					{ clipPath: PANEL_CLIP_CLOSED },
-					'dismiss',
-				);
-			}
-
-			if (metaBar) {
-				dismissTl.to(
-					metaBar,
-					{
-						backgroundColor: 'rgba(250, 250, 250, 0)',
-						onComplete: () => {
-							setMetaFill(false);
-							clearMetaFillProps();
-						},
-					},
-					'dismiss',
-				);
-			}
-
-			expandTimeline = dismissTl;
-		}
-
+		/** Image and white box contract after the detail div is gone. */
 		function startNarrow() {
-			// Synchronous Flip window — capture, mutate, Flip.from
 			const slideState = Flip.getState(slides, { props: 'opacity' });
 			const metaState = metaBar ? Flip.getState(metaBar) : null;
 			const controlsLeft = controlsVisualLeft();
@@ -1186,27 +1203,68 @@ const initialExpanded = detalleParam === '1' || detalleParam === 'true';
 			if (panel) panel.hidden = true;
 			clearPanelClip();
 			clearDetailAlpha();
-			clearMetaFillProps();
+			setSlideFade(true);
 			applyExpandedChrome(false);
+			setMetaFill(true);
+			if (metaBar) gsap.set(metaBar, { backgroundColor: '#FAFAFA' });
 			syncRowSpans({ panelRows: 0, layout: 'collapsed' });
+			clearLayoutHold();
 
-			const flipVars = { duration: NARROW_DURATION, ease: CLOSE_EASE };
-			const narrowTl = gsap.timeline({
+			const flipVars = { duration: UNISON_DURATION, ease: UNISON_EASE };
+			const tl = gsap.timeline({
 				defaults: flipVars,
 				onComplete: () => {
+					setMetaFill(false);
+					clearMetaFillProps();
 					clearFlipTransforms();
+					setSlideFade(false);
 					expandTimeline = null;
 				},
 			});
 
-			const narrowSlide = slideFlipTween(slideState, flipVars);
-			const narrowMeta = metaFlipTween(metaState, flipVars);
-			const narrowControls = controlsMoveTween(controlsLeft, flipVars);
-			if (narrowSlide) narrowTl.add(narrowSlide, 0);
-			if (narrowMeta) narrowTl.add(narrowMeta, 0);
-			if (narrowControls) narrowTl.add(narrowControls, 0);
+			const slideTween = slideFlipTween(slideState, flipVars);
+			const metaTween = metaFlipTween(metaState, flipVars);
+			const controlsTween = controlsMoveTween(controlsLeft, flipVars);
+			if (slideTween) tl.add(slideTween, 0);
+			if (metaTween) tl.add(metaTween, 0);
+			if (controlsTween) tl.add(controlsTween, 0);
+			if (metaBar) tl.to(metaBar, { backgroundColor: 'rgba(250, 250, 250, 0)' }, 0);
 
-			expandTimeline = narrowTl;
+			expandTimeline = tl;
+		}
+
+		/**
+		 * CLOSE — detail div leaves first, then the image and white box narrow.
+		 * The width Flip is created only after that, never inside a running timeline.
+		 */
+		function closeDetail() {
+			killExpandAnimations();
+			killDetailFadeUp();
+
+			const panelOpen = Boolean(panel && !panel.hidden && panel.offsetHeight > 0);
+			if (!panelOpen) {
+				startNarrow();
+				return;
+			}
+
+			const delta = measureCollapseDelta();
+			setMetaFill(true);
+			if (metaBar) gsap.set(metaBar, { backgroundColor: '#FAFAFA' });
+			if (panel) {
+				panel.hidden = false;
+				setPanelClip(PANEL_CLIP_OPEN);
+			}
+
+			const dismiss = gsap.timeline({
+				defaults: { duration: REVEAL_DURATION, ease: EXPAND_EASE },
+				onComplete: startNarrow,
+			});
+			tweenPanelReveal(dismiss, 1, 0);
+			if (pageGrid && delta > 0) {
+				dismiss.fromTo(pageGrid, { marginBottom: 0 }, { marginBottom: -delta }, 0);
+			}
+
+			expandTimeline = dismiss;
 		}
 
 		/** Navigate slots only — never opens/closes the detail panel. */

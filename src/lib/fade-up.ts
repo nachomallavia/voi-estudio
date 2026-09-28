@@ -102,8 +102,21 @@ function bindDetailFadeUp() {
 		return;
 	}
 
-	gsap.set(items, FROM);
-	detailTriggers = ScrollTrigger.batch(items, {
+	const limit = (scroller()?.clientHeight ?? window.innerHeight) * 0.9;
+	const visible: HTMLElement[] = [];
+	const below: HTMLElement[] = [];
+	for (const el of items) {
+		if (el.getBoundingClientRect().top < limit) visible.push(el);
+		else below.push(el);
+	}
+
+	// Already on screen: the panel reveal is their entrance. Hiding them
+	// here flashes the copy after the layout motion finishes.
+	gsap.set(visible, { autoAlpha: 1, y: 0 });
+	if (!below.length) return;
+
+	gsap.set(below, FROM);
+	detailTriggers = ScrollTrigger.batch(below, {
 		scroller: scroller(),
 		start: 'top 90%',
 		once: true,

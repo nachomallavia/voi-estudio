@@ -2,50 +2,53 @@
 import Layout from '../layouts/Layout.astro';
 import VoiOutline from '../assets/nosotros/voi-outline.svg';
 
-const partnerCopy =
-	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis orci elit. Cras non erat vestibulum, ornare augue q';
-
-const partners = [
-	{ name: 'Partner 1', copy: partnerCopy },
-	{ name: 'Partner 2', copy: partnerCopy },
-	{ name: 'Partner 3', copy: partnerCopy },
-] as const;
-
-const checklist = [
-	'ANÁLISIS GEOGRÁFICO',
-	'IMPACTO SOCIOCULTURAL',
-	'SELECCIÓN DE MATERIALES',
-	'DOCUMENTACIÓN TÉCNICA',
-] as const;
-
 const ecosistema = [
 	{
-		title: '1. EL EQUIPO',
+		title: '01. El equipo',
+		tag: 'Interno',
 		body: 'Desde adentro del estudio, donde cada talento suma una perspectiva única y técnica para resolver el problema.',
 	},
 	{
-		title: '2. LOS SOCIOS',
-		body: 'Asesores, constructores y proveedores que transforman la documentación técnica en realidad tangible.',
+		title: '02. Los socios',
+		tag: 'Asesores',
+		body: 'Constructores y proveedores que transforman la documentación técnica en realidad tangible. El conocimiento compartido reduce el error y potencia la innovación.',
 	},
 	{
-		title: '3. EL CLIENTE',
+		title: '03. El cliente',
+		tag: 'Validación',
 		body: 'El pilar fundamental. Sus necesidades operativas y deseos son el motor y la validación de cada trazo.',
 	},
+] as const;
+
+const cita = [
+	'Reflejamos la función a través de la precisión física.<br> No hay decisiones arbitrarias en nuestro proceso.',
+	'El color, la forma, la textura y el material son la manifestación directa del sistema que estamos creando.<br>',
+	'La estética es la consecuencia de un sistema diseñado.',
 ] as const;
 ---
 
 <Layout bgColor="bg-voi-white">
 	<div
-		class="col-span-full row-[1/span_18] z-10 relative grid grid-cols-subgrid grid-rows-subgrid font-libertad-mono text-voi-black lg:row-[1/span_12]"
+		class="col-span-full row-[1/span_13] z-10 relative grid grid-cols-subgrid grid-rows-subgrid font-libertad-mono text-voi-black lg:row-[1/span_9]"
 	>
-		{/* Manifesto — Layout rows 3+ (below logo/nav) */}
 		<section
-			class="col-span-full row-[3/span_5] z-10 px-5 lg:col-span-2 lg:col-start-2 lg:row-[3/span_5] lg:px-0"
+			class="col-span-full row-[3/span_2] z-10 px-5 lg:col-span-3 lg:col-start-2 lg:px-0"
 		>
-			<div class="text-base leading-6 space-y-6">
+			<div class="text-base leading-6 space-y-6 text-balance hidden md:block">
 				<p data-fade-up>
-					Nuestra identidad nace del reconocimiento del &ldquo;otro&rdquo;. Es una palabra que nos
-					recuerda que las mejores soluciones no vienen de una sola dirección.
+					Nuestra identidad nace del reconocimiento del &ldquo;otro&rdquo;.
+					<br> Es una palabra que nos recuerda que las mejores soluciones<br> no vienen de una sola dirección.
+				</p>
+				<p data-fade-up>
+					Buscamos expandir la arquitectura enfocándonos en el cliente, <br> entendiendo su necesidad
+					como punto de partida <br>para pdesarrollar un proyecto único.
+				</p>
+				<p data-fade-up>Nos adaptamos a la visión del otro aportando una mirada multidisciplinar.</p>
+			</div>
+			<div class="text-base leading-6 space-y-6 text-balance block lg:hidden">
+				<p data-fade-up>
+					Nuestra identidad nace del reconocimiento del &ldquo;otro&rdquo;.<br>
+					Es una palabra que nos recuerda que las mejores soluciones no vienen de una sola dirección.
 				</p>
 				<p data-fade-up>
 					Buscamos expandir la arquitectura enfocándonos en el cliente, entendiendo su necesidad
@@ -53,38 +56,10 @@ const ecosistema = [
 				</p>
 				<p data-fade-up>Nos adaptamos a la visión del otro aportando una mirada multidisciplinar.</p>
 			</div>
-
-			<h2 data-fade-up class="mt-8 text-2xl font-black leading-6 text-voi-orange uppercase">
-				Precisión y materialidad
-			</h2>
-
-			<div class="mt-6 text-base leading-6 space-y-6">
-				<p data-fade-up>
-					Reflejamos la función a través de la precisión física. No hay decisiones arbitrarias en
-					nuestro proceso.
-				</p>
-				<p data-fade-up>
-					El color, la forma, la textura y el material son la manifestación directa del sistema que
-					estamos creando.
-				</p>
-				<p data-fade-up>La estética es la consecuencia de un sistema bien diseñado.</p>
-			</div>
-
-			<ul class="mt-10 text-base leading-8 uppercase list-none p-0 m-0">
-				{
-					checklist.map((item) => (
-						<li data-fade-up>
-							<span aria-hidden="true">[ + ] </span>
-							{item}
-						</li>
-					))
-				}
-			</ul>
 		</section>
 
-		{/* Partners — desktop: top-right beside brand; mobile: below manifesto */}
 		<section
-			class="col-span-full row-[8/span_4] relative z-10 px-5 pt-8 lg:row-[2/span_5] lg:col-span-2 lg:col-start-5 lg:px-0"
+			class="col-span-full row-[6/span_4] relative z-10 px-5 pt-8 lg:col-span-2 lg:col-start-5 lg:row-[2/span_5] lg:px-0 lg:pt-8"
 		>
 			<div
 				data-parallax="0.5"
@@ -96,23 +71,21 @@ const ecosistema = [
 				/>
 			</div>
 
-			<ul class="relative z-10 m-0 flex list-none flex-col gap-10 p-0 lg:gap-12 lg:pt-8">
+			<div class="relative z-10 flex flex-col gap-10 lg:gap-12">
+				<h2 data-fade-up class="text-2xl leading-none uppercase">Ecosistema de trabajo</h2>
 				{
-					partners.map(({ name, copy }) => (
-						<li data-fade-up class="flex shrink-0 items-start gap-4 sm:gap-6">
-							<div class="size-24 shrink-0 bg-voi-black sm:size-32 lg:size-40" aria-hidden="true" />
-							<div class="flex min-w-0 flex-col">
-								<h4 class="text-lg leading-normal text-voi-black">{name}</h4>
-								<p class="max-w-80 pt-2 text-base leading-normal text-justify text-voi-black">
-									{copy}
-								</p>
-							</div>
-						</li>
+					ecosistema.map(({ title, tag, body }) => (
+						<article data-fade-up>
+							<h3 class="text-lg leading-normal uppercase">{title}</h3>
+							<p class="mt-2 text-sm uppercase">[ {tag} ]</p>
+							<p class=" pt-2 text-base leading-normal text-balance">{body}</p>
+						</article>
 					))
 				}
-			</ul>
+			</div>
 		</section>
-		<div class="col-span-1 row-span-2 row-start-5 col-start-7 hidden items-center justify-center lg:flex">
+
+		<div class="col-span-1 row-span-2 row-start-3 col-start-7 hidden items-center justify-center lg:flex">
 			<p
 				class="pointer-events-none z-20 origin-center -rotate-90 whitespace-nowrap text-lg text-voi-black"
 			>
@@ -120,23 +93,12 @@ const ecosistema = [
 			</p>
 		</div>
 
-		{/* Ecosistema — below manifesto on both breakpoints */}
-		<section
-			class="col-span-full row-[12/span_6] z-10 px-5 pb-20 lg:col-span-6 lg:col-start-2 lg:row-[8/span_5] lg:px-0"
-		>
-			<h2 data-fade-up class="mb-6 text-4xl leading-none uppercase">Ecosistema de trabajo</h2>
-
-			<div class="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-4">
-				{
-					ecosistema.map(({ title, body }) => (
-						<article data-fade-up>
-							<div class="aspect-[496/336] w-full bg-voi-orange" aria-hidden="true" />
-							<h3 class="mt-4 text-3xl leading-none uppercase">{title}</h3>
-							<p class="mt-4 max-w-[29rem] text-sm leading-normal text-voi-black">{body}</p>
-						</article>
-					))
-				}
+		<blockquote
+			class="col-span-full row-[9/span_4] z-10 mx-5 mb-20 bg-voi-orange flex items-center justify-center leading-6 lg:col-span-5 lg:col-start-2 lg:row-[6/span_2] lg:mx-0 lg:mb-16"
+			data-parallax="0.2" >
+			<div class="text-2xl space-y-4 mx-auto max-w-4xl px-8 py-8 md:px-8 md:py-8">
+				{cita.map((paragraph) => <p set:html={paragraph} class="text-balance leading-8" />)}
 			</div>
-		</section>
+		</blockquote>
 	</div>
 </Layout>
